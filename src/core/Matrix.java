@@ -32,10 +32,18 @@ public class Matrix {
 	public void setcolumn(int column) {
 		this.column = column;
 	}
-
+	
 
 
 	// Other method
+	public void printMatrix() {
+		for (int i = 0 ; i < 2 ; i++) {
+			for (int j = 0 ; j < 2 ; j++)
+				System.out.print(Double.toString(matrix[i][j]) + " ");
+			System.out.println();
+		}
+	}
+	
 	public double cofactorDet() {
 		if ((row == 2) && (column == 2))
 			return (matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]);
@@ -62,4 +70,20 @@ public class Matrix {
 		return det;
 	}
 
+	public double reducedrowDet() {
+		double det = 1, multiplier = 0;
+		double temp[][] = matrix;
+		for (int i = 0 ; i < column ; i++) {
+			det *= temp[i][i];
+			multiplier = temp[i][i];
+			for (int p = 0 ; p < column ; p++) 
+				temp[i][p] /= multiplier;
+			for (int j = i + 1 ; j < row ; j++) {
+				multiplier = temp[j][i];
+				for (int q = 0 ; q < column ; q++) 
+					temp[j][q] -= (temp[i][q] * multiplier);
+			}
+		}
+		return det;
+	}
 }
