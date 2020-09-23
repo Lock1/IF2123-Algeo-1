@@ -8,18 +8,16 @@ public class Core {
 			if (args[0].equals("-GUI")) {
 				//  --- GUI Part ---
 				try {
-				 	LinearAlgebra1GUI kul = new LinearAlgebra1GUI();
-				 	kul.open();
+				 	GUI.main(args);
 				}
 				catch (NoClassDefFoundError e) {
-					System.out.println("Exception : Failed to start GUI\nStarting CLI...\n");
-					LinearAlgebra1CLI.main(args);
+					System.out.println("Exception : Failed to start GUI\n");
+					System.out.println("Starting CLI...\n");
+					CLI.main(args);
 				}
 			}
-			else if (args[0].equals("-CLI")) {
-				// --- CLI Part ---
-				LinearAlgebra1CLI.main(args);
-			}
+			else if (args[0].equals("-CLI")) 
+				CLI.main(args);
 			else {
 				System.out.println("Unknown argument");
 				System.out.println("Usage: Core [Interface]");
@@ -29,8 +27,7 @@ public class Core {
 			}
 		} 
 		catch (Exception e) {
-			// --- CLI Part ---
-			LinearAlgebra1CLI.main(args);
+			CLI.main(args);
 		}
 	}
 

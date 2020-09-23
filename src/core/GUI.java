@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.*;
 
 
-public class LinearAlgebra1GUI {
+public class GUI {
 
 	protected Shell shell;
 	private Text text;
@@ -23,14 +23,14 @@ public class LinearAlgebra1GUI {
 	 * Launch the application.
 	 * @param args
 	 */
-//	public static void main(String[] args) {
-//		try {
-//			LinearAlgebra1GUI window = new LinearAlgebra1GUI();
-//			window.open();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public static void main(String[] args) {
+		try {
+			GUI window = new GUI();
+			window.open();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Open the window.
@@ -60,8 +60,8 @@ public class LinearAlgebra1GUI {
 		Label lblClick = new Label(shell, SWT.SHADOW_NONE);
 		//Image out = SWTResourceManager.getImage("img\\thonkhmm.gif");
 		//Image in = SWTResourceManager.getImage("img\\thonkhmm.jpg");
-		Image out = SWTResourceManager.getImage(LinearAlgebra1GUI.class,"/assets/img/thonkhmm.gif");
-		Image in = SWTResourceManager.getImage(LinearAlgebra1GUI.class,"/assets/img/thonkhmm.jpg");
+		Image out = SWTResourceManager.getImage(GUI.class,"/assets/img/thonkhmm.gif");
+		Image in = SWTResourceManager.getImage(GUI.class,"/assets/img/thonkhmm.jpg");
 		shell.setImage(in);
 		lblClick.setImage(in);
 		lblClick.addMouseTrackListener(new MouseTrackAdapter() {
