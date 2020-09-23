@@ -24,7 +24,7 @@ public class CLI {
 		for (int i = 0 ; i < 2 ; i++)
 			for (int j = 0 ; j < 2 ; j++)
 				kek.matrix[i][j] = input.nextInt();
-		System.out.println(Float.toString(kek.det()));
+		System.out.println(Double.toString(kek.cofactorDet()));
 	}
 
 }
