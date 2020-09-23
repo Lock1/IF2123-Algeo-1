@@ -1,4 +1,4 @@
-import userinterface.*;
+import core.*;
 
 public class Core {
 

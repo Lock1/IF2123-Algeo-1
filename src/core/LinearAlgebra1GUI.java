@@ -1,4 +1,4 @@
-package userinterface;
+package core;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -23,15 +23,14 @@ public class LinearAlgebra1GUI {
 	 * Launch the application.
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		try {
-			LinearAlgebra1GUI window = new LinearAlgebra1GUI();
-			window.open();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
+//	public static void main(String[] args) {
+//		try {
+//			LinearAlgebra1GUI window = new LinearAlgebra1GUI();
+//			window.open();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	/**
 	 * Open the window.
