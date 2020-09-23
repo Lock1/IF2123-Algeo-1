@@ -1,3 +1,5 @@
+package userinterface;
+
 import java.util.Scanner;
 
 public class LinearAlgebra1CLI {

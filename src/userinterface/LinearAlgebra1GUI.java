@@ -1,3 +1,5 @@
+package userinterface;
+
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
@@ -5,7 +7,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.wb.swt.SWTResourceManager;
+import assets.org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
@@ -59,8 +61,8 @@ public class LinearAlgebra1GUI {
 		Label lblClick = new Label(shell, SWT.SHADOW_NONE);
 		//Image out = SWTResourceManager.getImage("img\\thonkhmm.gif");
 		//Image in = SWTResourceManager.getImage("img\\thonkhmm.jpg");
-		Image out = SWTResourceManager.getImage(LinearAlgebra1GUI.class,"/img/thonkhmm.gif");
-		Image in = SWTResourceManager.getImage(LinearAlgebra1GUI.class,"/img/thonkhmm.jpg");
+		Image out = SWTResourceManager.getImage(LinearAlgebra1GUI.class,"/assets/img/thonkhmm.gif");
+		Image in = SWTResourceManager.getImage(LinearAlgebra1GUI.class,"/assets/img/thonkhmm.jpg");
 		shell.setImage(in);
 		lblClick.setImage(in);
 		lblClick.addMouseTrackListener(new MouseTrackAdapter() {
