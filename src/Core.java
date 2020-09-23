@@ -3,7 +3,6 @@ import core.*;
 public class Core {
 
 	public static void main(String[] args) {
-		
 		try {
 			if (args[0].equals("-GUI")) {
 				//  --- GUI Part ---
