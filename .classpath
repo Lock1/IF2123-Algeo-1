@@ -10,8 +10,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Tanur Rizal/Documents/GitHub/Alin1/src/libs/org.eclipse.core.commands_3.9.700.v20191217-1850.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Tanur Rizal/Documents/GitHub/Alin1/src/libs/org.eclipse.core.runtime_3.18.0.v20200506-2143.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Tanur Rizal/Documents/GitHub/Alin1/src/libs/org.eclipse.swt.win32.win32.x86_64_3.114.100.v20200604-0951.jar"/>
+	<classpathentry kind="lib" path="src/libs/org.eclipse.swt.win32.win32.x86_64_3.114.100.v20200604-0951.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
