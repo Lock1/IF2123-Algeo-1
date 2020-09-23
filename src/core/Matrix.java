@@ -20,19 +20,19 @@ public class Matrix {
 
 
 	// Get & Set Method
-	public int getrow() {
+	public int getRow() {
 		return row;
 	}
-	public void setrow(int row) {
+	public void setRow(int row) {
 		this.row = row;
 	}
-	public int getcolumn() {
+	public int getColumn() {
 		return column;
 	}
-	public void setcolumn(int column) {
+	public void setColumn(int column) {
 		this.column = column;
 	}
-	
+
 
 
 	// Other method
@@ -43,13 +43,16 @@ public class Matrix {
 			System.out.println();
 		}
 	}
-	
+
 	public double cofactorDet() {
+		// Base case, 2x2 Matrix Determinant
 		if ((row == 2) && (column == 2))
 			return (matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]);
+
+		// Recursive case
 		double det = 0;
 		boolean skip = false;
-		int cfsign = 0, p = 0;
+		int p = 0;
 		Matrix minor = new Matrix(row-1,column-1);
 		for (int i = 0 ; i < row ; i++) {
 			p = 0;
@@ -64,23 +67,25 @@ public class Matrix {
 				}
 				p++;
 			}
-			cfsign = 1 - 2 * (i & 1);
-			det += (matrix[i][0] * minor.cofactorDet() * cfsign);
+			det += (matrix[i][0] * minor.cofactorDet() * (1 - 2 * (i & 1)));
 		}
 		return det;
 	}
 
-	public double reducedrowDet() {
+	public double reducedRowDet() {
 		double det = 1, multiplier = 0;
 		double temp[][] = matrix;
 		for (int i = 0 ; i < column ; i++) {
-			det *= temp[i][i];
-			multiplier = temp[i][i];
-			for (int p = 0 ; p < column ; p++) 
+			// Multiplication Row Operation
+			multiplier = temp[i][i]; 	// Saving multiplier
+			det *= multiplier;			// Determinant will changed by multiplication factor x if multiplying with 1/x
+			for (int p = 0 ; p < column ; p++)
 				temp[i][p] /= multiplier;
+			// Row Addition Operation
+			// No change in determinant value
 			for (int j = i + 1 ; j < row ; j++) {
 				multiplier = temp[j][i];
-				for (int q = 0 ; q < column ; q++) 
+				for (int q = 0 ; q < column ; q++) //TODO optimize skip when RO not needed
 					temp[j][q] -= (temp[i][q] * multiplier);
 			}
 		}
