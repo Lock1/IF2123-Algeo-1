@@ -34,6 +34,17 @@ public class Matrix {
 	}
 
 
+	// Conversion method
+	public Matrix stringToMatrix(String stream) {
+		// Count Size
+
+		// Initalisation
+		Matrix S = new Matrix(10,10);
+
+		// Convert
+		return S;
+	}
+
 
 	// Other method
 	public void printMatrix() {
