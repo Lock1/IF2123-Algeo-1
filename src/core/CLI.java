@@ -41,12 +41,19 @@ public class CLI {
 //			readInput.closeFile();
 //			readInput.readFile(fn);
 //			System.out.print(readInput.charStringRead());
+		
 //		}
+		
 		System.out.println("KEKL");
 		FileParser read = new FileParser();
 		read.readFile("anotherone.txt");
-		System.out.println(read.stringRead());
-		System.out.println("what");
+		String lul = read.stringRead();//.replaceAll("\\d","1");//.replaceAll("\\n", "");
+		System.out.print(lul);
+		System.out.println(Integer.toString(lul.length()));
+		Matrix tp = Matrix.stringToMatrix(lul);
+//		for (int i = 0 ; i < lul.length() ; i++) 
+//			System.out.println(Integer.toString(i) + " -> " + lul.charAt(i));
+		tp.printMatrix();
 	}
 
 }

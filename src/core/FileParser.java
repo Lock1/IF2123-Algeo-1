@@ -38,7 +38,7 @@ public class FileParser { // TODO find how to relative - absolute path
         catch (Exception e) {
         	System.out.println("Exception: FileParser failed to read File");
         }
-        return tempS.toString();
+        return (tempS.toString().replaceAll("\0", "").replaceAll("\t|\b|\r|\f","") + "\n");
     }
 
 
