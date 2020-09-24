@@ -3,12 +3,15 @@ package core;
 import java.util.Scanner;
 
 public class CLI {
-
+	
 	public static void main(String args[]) {
-		@SuppressWarnings({ "resource", "unused" }) // debug
 		Scanner input = new Scanner(System.in);
+		String menuInput = "";
+		boolean exit = false;
+		int tempInt = 0;
 		// Main menu loop
-		while (true) {
+		do {
+			// Main Menu interface
 			System.out.println("MENU");
 			System.out.println("1. Sistem Persamaan Linier");
 			System.out.println("2. Determinan");
@@ -16,12 +19,47 @@ public class CLI {
 			System.out.println("4. Interpolasi Polinom");
 			System.out.println("5. Regresi linier berganda");
 			System.out.println("6. Keluar");
-			break;
-		}
+			
+			// Input
+			menuInput = input.nextLine();
+			// Exception handler for casting integer
+			try { 
+				tempInt = Integer.parseInt(menuInput);
+			}
+			catch (NumberFormatException nfe) {
+				
+			}
+			
+			
+			// Test case
+			switch (tempInt) {
+				case 1:
+					System.out.println("TBA");
+					break;
+				case 2:
+					System.out.println("TBA");
+					break;
+				case 3:
+					System.out.println("TBA");
+					break;
+				case 4:
+					System.out.println("TBA");
+					break;
+				case 5:
+					System.out.println("TBA");
+					break;
+				case 6:
+					exit = true;
+					break;
+			}
+			
+		} while (!exit);
+		
+		// Exit sequence
+		input.close();
 
 
-
-		// testing purpose
+		// ---------------- testing purpose ----------------
 		// det
 //		Matrix kek = new Matrix(2,2);
 //		for (int i = 0 ; i < 2 ; i++)
@@ -65,6 +103,7 @@ public class CLI {
 		
 		read.writeFile("cool.txt");
 		read.stringWrite(prc);
+		// ---------------- testing purpose ----------------
 	}
 
 }

@@ -6,14 +6,15 @@ public class Matrix {
 	private int column;
 	public double matrix[][];
 
+	
 	// Constructor
-	public Matrix(int b,int k) {
-		row = b;
-		column = k;
-		matrix = new double[b][k];
+	public Matrix(int r,int c) {
+		row = r;
+		column = c;
+		matrix = new double[r][c];
 		// Zero matrix initalisation
-		for (int i = 0 ; i < b ; i++)
-			for (int j = 0 ; j < k ; j++)
+		for (int i = 0 ; i < r ; i++)
+			for (int j = 0 ; j < c ; j++)
 				matrix[i][j] = 0;
 	}
 
@@ -60,7 +61,7 @@ public class Matrix {
 		try {
 			String temporaryNumber = "";
 			int currentIndex = 0;
-			for (int i = 0 ; i < stream.length() ; i++) { // TODO, optimize reading
+			for (int i = 0 ; i < stream.length() ; i++) {
 				if (Character.toString(stream.charAt(i)).matches("[0-9]|\\.")) {
 					readingN = true;
 					if (readingN)
