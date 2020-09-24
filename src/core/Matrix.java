@@ -34,11 +34,52 @@ public class Matrix {
 	}
 
 
+	// Conversion method
+	public static Matrix stringToMatrix(String stream) {
+		// TODO, currently cannot handle newline if added on EOF and 0x0 Matrix
+		// Count Size
+		int rRow = 0, rCol = 0;
+		boolean readingN = false, firstRow = true;
+		for (int i = 0 ; i < stream.length() ; i++) { // TODO, optimize reading
+			if ((Character.toString(stream.charAt(i)).matches("[0-9]|\\.")) && !readingN && firstRow) {
+				rCol++;
+				readingN = true;
+			}
+			if (Character.toString(stream.charAt(i)).matches(" "))
+				readingN = false;
+
+			if (Character.toString(stream.charAt(i)).matches("\n")) {
+				firstRow = false;
+				rRow++;
+			}
+		}
+		// Initalisation
+		Matrix readMatrix = new Matrix(rRow,rCol);
+
+		// Convert
+		String temporaryNumber = "";
+		int currentIndex = 0;
+		for (int i = 0 ; i < stream.length() ; i++) { // TODO, optimize reading
+			if (Character.toString(stream.charAt(i)).matches("[0-9]|\\.")) {
+				readingN = true;
+				if (readingN)
+					temporaryNumber = temporaryNumber + Character.toString(stream.charAt(i));
+			}
+			if (Character.toString(stream.charAt(i)).matches(" |\n")) {
+				readingN = false;
+				readMatrix.matrix[currentIndex / rCol][currentIndex % rCol] = Double.parseDouble(temporaryNumber);
+				temporaryNumber = "";
+				currentIndex++;
+			}
+		}
+		return readMatrix;
+	}
+
 
 	// Other method
 	public void printMatrix() {
-		for (int i = 0 ; i < 2 ; i++) {
-			for (int j = 0 ; j < 2 ; j++)
+		for (int i = 0 ; i < row ; i++) {
+			for (int j = 0 ; j < column ; j++)
 				System.out.print(Double.toString(matrix[i][j]) + " ");
 			System.out.println();
 		}
