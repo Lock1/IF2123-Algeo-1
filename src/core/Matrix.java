@@ -36,11 +36,10 @@ public class Matrix {
 
 	// Conversion method
 	public static Matrix stringToMatrix(String stream) {
-		// TODO, currently cannot handle newline if added on EOF and 0x0 Matrix
 		// Count Size
 		int rRow = 0, rCol = 0;
 		boolean readingN = false, firstRow = true;
-		for (int i = 0 ; i < stream.length() ; i++) { // TODO, optimize reading
+		for (int i = 0 ; i < stream.length() ; i++) { // maybe it split to row & column read for lower instruction
 			if ((Character.toString(stream.charAt(i)).matches("[0-9]|\\.")) && !readingN && firstRow) {
 				rCol++;
 				readingN = true;
@@ -53,28 +52,47 @@ public class Matrix {
 				rRow++;
 			}
 		}
+
 		// Initalisation
 		Matrix readMatrix = new Matrix(rRow,rCol);
 
 		// Convert
-		String temporaryNumber = "";
-		int currentIndex = 0;
-		for (int i = 0 ; i < stream.length() ; i++) { // TODO, optimize reading
-			if (Character.toString(stream.charAt(i)).matches("[0-9]|\\.")) {
-				readingN = true;
-				if (readingN)
-					temporaryNumber = temporaryNumber + Character.toString(stream.charAt(i));
+		try {
+			String temporaryNumber = "";
+			int currentIndex = 0;
+			for (int i = 0 ; i < stream.length() ; i++) { // TODO, optimize reading
+				if (Character.toString(stream.charAt(i)).matches("[0-9]|\\.")) {
+					readingN = true;
+					if (readingN)
+						temporaryNumber = temporaryNumber + Character.toString(stream.charAt(i));
+				}
+				if (Character.toString(stream.charAt(i)).matches(" |\n")) {
+					readingN = false;
+					readMatrix.matrix[currentIndex / rCol][currentIndex % rCol] = Double.parseDouble(temporaryNumber);
+					temporaryNumber = "";
+					currentIndex++;
+				}
 			}
-			if (Character.toString(stream.charAt(i)).matches(" |\n")) {
-				readingN = false;
-				readMatrix.matrix[currentIndex / rCol][currentIndex % rCol] = Double.parseDouble(temporaryNumber);
-				temporaryNumber = "";
-				currentIndex++;
-			}
+		}
+		catch (NumberFormatException emptystring) {
+			return new Matrix(0,0);
 		}
 		return readMatrix;
 	}
 
+	public static String matrixToString(Matrix matrixData) {
+		String tempMString = "";
+		for (int i = 0 ; i < matrixData.getRow() ; i++) {
+			for (int j = 0 ; j < matrixData.getColumn() ; j++) {
+				tempMString = tempMString + Double.toString(matrixData.matrix[i][j]);
+				if (j != (matrixData.getColumn() - 1))
+					tempMString = tempMString + " ";
+			}
+			tempMString = tempMString + "\n";
+		}
+
+		return tempMString;
+	}
 
 	// Other method
 	public void printMatrix() {
@@ -85,7 +103,13 @@ public class Matrix {
 		}
 	}
 
+	// Determinant method
 	public double cofactorDet() {
+		// NaN flag if not square matrix
+		if (row != column) {
+			return Double.NaN;
+		}
+
 		// Base case, 2x2 Matrix Determinant
 		if ((row == 2) && (column == 2))
 			return (matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]);
@@ -114,6 +138,11 @@ public class Matrix {
 	}
 
 	public double reducedRowDet() {
+		// NaN flag if not square matrix
+		if (row != column) {
+			return Double.NaN;
+		}
+
 		double det = 1, multiplier = 0;
 		double temp[][] = matrix;
 		for (int i = 0 ; i < column ; i++) {

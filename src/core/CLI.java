@@ -43,17 +43,28 @@ public class CLI {
 //			System.out.print(readInput.charStringRead());
 		
 //		}
-		
-		System.out.println("KEKL");
+		// raw string
+		System.out.println("Raw string file");
 		FileParser read = new FileParser();
 		read.readFile("anotherone.txt");
 		String lul = read.stringRead();//.replaceAll("\\d","1");//.replaceAll("\\n", "");
 		System.out.print(lul);
-		System.out.println(Integer.toString(lul.length()));
+		System.out.println();
 		Matrix tp = Matrix.stringToMatrix(lul);
 //		for (int i = 0 ; i < lul.length() ; i++) 
 //			System.out.println(Integer.toString(i) + " -> " + lul.charAt(i));
+		
+		// object 
+		System.out.println("Object");
 		tp.printMatrix();
+		
+		// processed raw string
+		String prc = Matrix.matrixToString(tp);
+		System.out.println("\nRaw string object");
+		System.out.print(prc);
+		
+		read.writeFile("cool.txt");
+		read.stringWrite(prc);
 	}
 
 }
