@@ -6,7 +6,7 @@ public class Matrix {
 	private int column;
 	public double matrix[][];
 
-	
+
 	// Constructor
 	public Matrix(int r,int c) {
 		row = r;
@@ -37,6 +37,7 @@ public class Matrix {
 
 	// Conversion method
 	public static Matrix stringToMatrix(String stream) {
+		// FIXME : Just make it shorter
 		// Count Size
 		int rRow = 0, rCol = 0;
 		boolean readingN = false, firstRow = true;
@@ -114,7 +115,6 @@ public class Matrix {
 		// Base case, 2x2 Matrix Determinant
 		if ((row == 2) && (column == 2))
 			return (matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]);
-
 		// Recursive case
 		double det = 0;
 		boolean skip = false;
@@ -135,10 +135,12 @@ public class Matrix {
 			}
 			det += (matrix[i][0] * minor.cofactorDet() * (1 - 2 * (i & 1)));
 		}
+		
 		return det;
 	}
 
 	public double reducedRowDet() {
+		// FIXME : Potential RRD by using only multiplication to avoid floating point rounding error
 		// NaN flag if not square matrix
 		if (row != column) {
 			return Double.NaN;
@@ -146,6 +148,7 @@ public class Matrix {
 
 		double det = 1, multiplier = 0;
 		double temp[][] = matrix;
+		// FIXME : Doesnt work for 0 matrix
 		for (int i = 0 ; i < column ; i++) {
 			// Multiplication Row Operation
 			multiplier = temp[i][i]; 	// Saving multiplier

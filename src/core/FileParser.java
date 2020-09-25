@@ -26,7 +26,7 @@ public class FileParser { // TODO find how to relative - absolute path
     }
 
     public String stringRead() {
-    	char temp[] = new char[20000];
+    	char temp[] = new char[20000]; // Max buffer
         BufferedReader readFileB = new BufferedReader(readFile);
         StringBuilder tempS = new StringBuilder();
         try {
