@@ -25,7 +25,7 @@ public class FileParser { // TODO find how to relative - absolute path
         }
     }
 
-    public String stringRead() {
+    public String stringRead() { // FIXME : Theres some problem with last column entry if using space before newline
     	char temp[] = new char[20000]; // Max buffer
         BufferedReader readFileB = new BufferedReader(readFile);
         StringBuilder tempS = new StringBuilder();
