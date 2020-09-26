@@ -110,8 +110,6 @@ public class CLI {
 				System.out.println("Masukkan tidak diketahui");
 		}
 		// Printing matrix
-		// tempMatrix.printMatrix();
-		// System.out.println(Integer.toString(tempMatrix.getRow()) + " " + Integer.toString(tempMatrix.getColumn()));
 		if (tempMatrix.getRow() < 11) {
 			System.out.println("Matriks masukkan");
 			tempMatrix.printMatrix();
@@ -119,16 +117,15 @@ public class CLI {
 		// Deteminant calculation
 		if (stringMemory.equals("1"))
 			tempDouble = tempMatrix.cofactorDet();
-		else if (stringMemory.equals("2"))
+		else
 			tempDouble = tempMatrix.reducedRowDet();
-		tempMatrix.printMatrix(); // very weird bug, after cofactorDet called, it causing tempmatrix to NaN
 
 		System.out.println("Determinan : " + Double.toString(tempDouble));
 		System.out.println("Simpan hasil dalam file? (y/n)");
 		tempString = CLI.stringInput();
 
 		if (tempString.equals("y") || tempString.equals("Y"))
-			dataWrite(Matrix.matrixToString(tempMatrix) + "\nDeterminan : " + Double.toString(tempDouble));
+			dataWrite(Matrix.matrixToString(tempMatrix) + "Determinan : " + Double.toString(tempDouble));
 	}
 
 
@@ -196,9 +193,8 @@ public class CLI {
 //		}
 		// raw string
 		System.out.println("Raw string file");
-		FileParser read = new FileParser();
-		read.readFile("anotherone.txt");
-		String lul = read.stringRead();//.replaceAll("\\d","1");//.replaceAll("\\n", "");
+		ioFile.readFile("anotherone.txt");
+		String lul = ioFile.stringRead();//.replaceAll("\\d","1");//.replaceAll("\\n", "");
 		System.out.print(lul);
 		System.out.println();
 		Matrix tp = Matrix.stringToMatrix(lul);
@@ -214,8 +210,8 @@ public class CLI {
 		System.out.println("\nRaw string object");
 		System.out.print(prc);
 
-		read.writeFile("cool.txt");
-		read.stringWrite(prc);
+		ioFile.writeFile("cool2.txt");
+		ioFile.stringWrite(prc);
 		// ---------------- testing purpose ----------------
 	}
 

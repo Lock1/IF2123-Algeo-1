@@ -105,12 +105,21 @@ public class Matrix {
 		}
 	}
 
+	public void swapRow(int r1, int r2) {
+		double tempDB = 0;
+		for (int j = 0 ; j < column ; j++) {
+			tempDB = matrix[r1][j];
+			matrix[r1][j] = matrix[r2][j];
+			matrix[r2][j] = tempDB;
+		}
+	}
+
 	// Determinant method
 	public double cofactorDet() {
-		// NaN flag if not square matrix // FIXME : Currently both determinant calculation having issue with 0 matrix
-		// if (row != column) {
-		// 	return Double.NaN;
-		// }
+		// NaN flag if not square matrix
+		if (row != column) {
+			return Double.NaN;
+		}
 
 		// Base case, 2x2 Matrix Determinant
 		if ((row == 2) && (column == 2))
@@ -146,23 +155,50 @@ public class Matrix {
 			return Double.NaN;
 		}
 
+		// Initalisation and copying matrix value
 		double det = 1, multiplier = 0;
-		double temp[][] = matrix;
+		Matrix temp = new Matrix(row,column);
+		for (int i = 0 ; i < row ; i++)
+			for (int j = 0 ; j < column ; j++)
+				temp.matrix[i][j] = this.matrix[i][j];
+
+		// Diagonal row swap, try make all diagonal non-zero
+		boolean negated = false;
+		for (int i = 0 ; i < row ; i++) {
+			if (temp.matrix[i][i] == 0.0) {
+				for (int a = 0 ; a < row ; a++) {
+					if (temp.matrix[a][i] != 0.0) {
+						temp.swapRow(a,i);
+						negated = !negated;
+						break;
+					}
+				}
+			}
+		}
+
+		// Diagonal scan
+		for (int i = 0 ; i < row ; i++)
+			if (temp.matrix[i][i] == 0.0)
+				return 0.0;
+
+
 		// FIXME : Doesnt work for 0 matrix
 		for (int i = 0 ; i < column ; i++) {
 			// Multiplication Row Operation
-			multiplier = temp[i][i]; 	// Saving multiplier
-			det *= multiplier;			// Determinant will changed by multiplication factor x if multiplying with 1/x
+			multiplier = temp.matrix[i][i]; 	// Saving multiplier
+			det *= multiplier;					// Determinant will changed by multiplication factor x if multiplying with 1/x
 			for (int p = 0 ; p < column ; p++)
-				temp[i][p] /= multiplier;
+				temp.matrix[i][p] /= multiplier;
 			// Row Addition Operation
 			// No change in determinant value
 			for (int j = i + 1 ; j < row ; j++) {
-				multiplier = temp[j][i];
-				for (int q = 0 ; q < column ; q++) //TODO optimize skip when RO not needed
-					temp[j][q] -= (temp[i][q] * multiplier);
+				multiplier = temp.matrix[j][i];
+				for (int q = 0 ; q < column ; q++)
+					temp.matrix[j][q] -= (temp.matrix[i][q] * multiplier);
 			}
 		}
+		if (negated)
+			return (-det);
 		return det;
 	}
 }
