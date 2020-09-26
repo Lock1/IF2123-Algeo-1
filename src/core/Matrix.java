@@ -105,6 +105,8 @@ public class Matrix {
 		}
 	}
 
+
+	// Row & Column operation
 	public void swapRow(int r1, int r2) {
 		double tempDB = 0;
 		for (int j = 0 ; j < column ; j++) {
@@ -112,6 +114,21 @@ public class Matrix {
 			matrix[r1][j] = matrix[r2][j];
 			matrix[r2][j] = tempDB;
 		}
+	}
+
+	public void multiplyRow(int rDst, double m) {
+		for (int j = 0 ; j < column ; j++)
+			matrix[rDst][j] *= m;
+	}
+
+	public void sumRow(int rSrc, int rDst, double m) {
+		for (int j = 0 ; j < column ; j++)
+			matrix[rDst][j] += (matrix[rSrc][j] * m);
+	}
+
+	public void replaceColumn(int cDst, double nColumn[]) {
+		for (int i = 0 ; i < row ; i++)
+			matrix[i][cDst] = nColumn[i];
 	}
 
 	// Determinant method
@@ -149,7 +166,6 @@ public class Matrix {
 	}
 
 	public double reducedRowDet() {
-		// FIXME : Potential RRD by using only multiplication to avoid floating point rounding error
 		// NaN flag if not square matrix
 		if (row != column) {
 			return Double.NaN;
@@ -169,7 +185,7 @@ public class Matrix {
 				for (int a = 0 ; a < row ; a++) {
 					if (temp.matrix[a][i] != 0.0) {
 						temp.swapRow(a,i);
-						negated = !negated;
+						negated = !negated;			// Single swap correspond multiplication by (-1) on resulting determinant
 						break;
 					}
 				}
@@ -181,20 +197,16 @@ public class Matrix {
 			if (temp.matrix[i][i] == 0.0)
 				return 0.0;
 
-
-		// FIXME : Doesnt work for 0 matrix
 		for (int i = 0 ; i < column ; i++) {
 			// Multiplication Row Operation
 			multiplier = temp.matrix[i][i]; 	// Saving multiplier
 			det *= multiplier;					// Determinant will changed by multiplication factor x if multiplying with 1/x
-			for (int p = 0 ; p < column ; p++)
-				temp.matrix[i][p] /= multiplier;
+			temp.multiplyRow(i,1/multiplier);
 			// Row Addition Operation
 			// No change in determinant value
 			for (int j = i + 1 ; j < row ; j++) {
 				multiplier = temp.matrix[j][i];
-				for (int q = 0 ; q < column ; q++)
-					temp.matrix[j][q] -= (temp.matrix[i][q] * multiplier);
+				temp.sumRow(i,j,-multiplier);
 			}
 		}
 		if (negated)
