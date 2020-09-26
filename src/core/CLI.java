@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class CLI {
 	// Internal variable
+	private static FileParser ioFile = new FileParser();
 	private static Scanner userInput = new Scanner(System.in);
 	private static String tempString = "", stringMemory = "";
 	private static boolean tempBoolean = false;
@@ -11,16 +12,14 @@ public class CLI {
 	private static Matrix tempMatrix;
 	private static int tempInt = 0;
 
-
+	// Commonly used method
 	private static void stringInput() {
 		System.out.print(">> ");
 		tempString = userInput.nextLine();
 	}
 
 
-	// Commonly used method
 	private static Matrix matrixInput() {
-		FileParser readMatrixFile = new FileParser();
 		// Input type Interface
 		System.out.println("\nInput matriks");
 		System.out.println("1. File");
@@ -31,8 +30,11 @@ public class CLI {
 			if (tempString.equals("1")) {
 				System.out.println("Masukan nama file (termasuk ekstensi)");
 				CLI.stringInput();
-				if (!readMatrixFile.readFile(tempString))
-					return Matrix.stringToMatrix(readMatrixFile.stringRead());
+				if (!ioFile.readFile(tempString)) {
+					stringMemory = ioFile.stringRead();
+					ioFile.closeFile();
+					return Matrix.stringToMatrix(stringMemory);
+				}
 				else
 					System.out.println("File tidak ditemukan");
 			}
@@ -79,6 +81,13 @@ public class CLI {
 		}
 	}
 
+	private static void dataWrite(String stream) {
+		System.out.print("Nama file : ");
+		tempString = userInput.nextLine();
+		ioFile.writeFile(tempString);
+		ioFile.stringWrite(stream);
+		ioFile.closeFile();
+	}
 
 	// Menu Method
 	private static void determinantMenu() {
@@ -97,19 +106,25 @@ public class CLI {
 				System.out.println("Masukkan tidak diketahui");
 		}
 		// Printing matrix
-		tempMatrix.printMatrix();
-		System.out.println(Integer.toString(tempMatrix.getRow()) + " " + Integer.toString(tempMatrix.getColumn()));
+		// tempMatrix.printMatrix();
+		// System.out.println(Integer.toString(tempMatrix.getRow()) + " " + Integer.toString(tempMatrix.getColumn()));
 		if (tempMatrix.getRow() < 11) {
 			System.out.println("Matriks masukkan");
 			tempMatrix.printMatrix();
 		}
 		// Deteminant calculation
+		tempMatrix.printMatrix();
 		if (stringMemory.equals("1"))
 			tempDouble = tempMatrix.cofactorDet();
 		else
 			tempDouble = tempMatrix.reducedRowDet();
 
 		System.out.println("Determinan : " + Double.toString(tempDouble));
+		System.out.println("Simpan hasil dalam file? (y/n)");
+		CLI.stringInput();
+
+		if (tempString.equals("y") || tempString.equals("Y"))
+			dataWrite(Matrix.matrixToString(tempMatrix) + "\nDeterminan : " + Double.toString(tempDouble));
 	}
 
 

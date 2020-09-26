@@ -107,14 +107,14 @@ public class Matrix {
 
 	// Determinant method
 	public double cofactorDet() {
-		// NaN flag if not square matrix
-		if (row != column) {
-			return Double.NaN;
-		}
+		// NaN flag if not square matrix // FIXME : Currently both determinant calculation having issue with 0 matrix
+		// if (row != column) {
+		// 	return Double.NaN;
+		// }
 
 		// Base case, 2x2 Matrix Determinant
 		if ((row == 2) && (column == 2))
-			return (matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]);
+			return (this.matrix[0][0] * this.matrix[1][1] - this.matrix[0][1] * this.matrix[1][0]);
 		// Recursive case
 		double det = 0;
 		boolean skip = false;
@@ -129,13 +129,13 @@ public class Matrix {
 						p++;
 						skip = true;
 					}
-					minor.matrix[j][k] = matrix[p][k+1];
+					minor.matrix[j][k] = this.matrix[p][k+1];
 				}
 				p++;
 			}
-			det += (matrix[i][0] * minor.cofactorDet() * (1 - 2 * (i & 1)));
+			det += (this.matrix[i][0] * minor.cofactorDet() * (1 - 2 * (i & 1)));
 		}
-		
+
 		return det;
 	}
 
