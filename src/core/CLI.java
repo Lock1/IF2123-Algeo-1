@@ -6,30 +6,32 @@ public class CLI {
 	// Internal variable
 	private static FileParser ioFile = new FileParser();
 	private static Scanner userInput = new Scanner(System.in);
-	private static String tempString = "", stringMemory = "";
 	private static boolean tempBoolean = false;
 	private static Double tempDouble = 0.0;
 	private static Matrix tempMatrix;
 	private static int tempInt = 0;
 
 	// Commonly used method
-	private static void stringInput() {
+	private static String stringInput() {
+		String tempString = "";
 		System.out.print(">> ");
 		tempString = userInput.nextLine();
+		return tempString;
 	}
 
 
 	private static Matrix matrixInput() {
 		// Input type Interface
+		String tempString = "", stringMemory = "";
 		System.out.println("\nInput matriks");
 		System.out.println("1. File");
 		System.out.println("2. Keyboard");
 		while (true) {
-			CLI.stringInput();
+			tempString = CLI.stringInput();
 			// File Input
 			if (tempString.equals("1")) {
 				System.out.println("Masukan nama file (termasuk ekstensi)");
-				CLI.stringInput();
+				tempString = CLI.stringInput();
 				if (!ioFile.readFile(tempString)) {
 					stringMemory = ioFile.stringRead();
 					ioFile.closeFile();
@@ -82,6 +84,7 @@ public class CLI {
 	}
 
 	private static void dataWrite(String stream) {
+		String tempString = "";
 		System.out.print("Nama file : ");
 		tempString = userInput.nextLine();
 		ioFile.writeFile(tempString);
@@ -92,13 +95,14 @@ public class CLI {
 	// Menu Method
 	private static void determinantMenu() {
 		// Determinant interface
+		String tempString = "", stringMemory = "";
 		System.out.println("\nDeterminan");
 		System.out.println("1. Metode Kofaktor");
 		System.out.println("2. Metode Reduksi Baris");
 		while (true) {
-			CLI.stringInput();
-			stringMemory = tempString;
+			tempString = CLI.stringInput();
 			if (tempString.equals("1") || tempString.equals("2")) {
+				stringMemory = tempString;
 				tempMatrix = CLI.matrixInput();
 				break;
 			}
@@ -113,15 +117,15 @@ public class CLI {
 			tempMatrix.printMatrix();
 		}
 		// Deteminant calculation
-		tempMatrix.printMatrix();
 		if (stringMemory.equals("1"))
 			tempDouble = tempMatrix.cofactorDet();
-		else
+		else if (stringMemory.equals("2"))
 			tempDouble = tempMatrix.reducedRowDet();
+		tempMatrix.printMatrix(); // very weird bug, after cofactorDet called, it causing tempmatrix to NaN
 
 		System.out.println("Determinan : " + Double.toString(tempDouble));
 		System.out.println("Simpan hasil dalam file? (y/n)");
-		CLI.stringInput();
+		tempString = CLI.stringInput();
 
 		if (tempString.equals("y") || tempString.equals("Y"))
 			dataWrite(Matrix.matrixToString(tempMatrix) + "\nDeterminan : " + Double.toString(tempDouble));
@@ -131,6 +135,7 @@ public class CLI {
 
 	// Main Method
 	public static void main(String args[]) {
+		String tempString = "";
 		// Main menu loop
 		while (true) {
 			// Main Menu interface
@@ -143,7 +148,7 @@ public class CLI {
 			System.out.println("6. Keluar");
 
 			// Input
-			CLI.stringInput();
+			tempString = CLI.stringInput();
 
 			// Test case
 			if (tempString.equals("1"))
