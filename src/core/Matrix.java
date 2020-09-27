@@ -133,30 +133,12 @@ public class Matrix {
 
 	// System of Linear Equation Method
 	public void gaussianElimination() {
-		boolean found = true; // TODO : Complete elimination
-		int minBox = (row < column) ? row : column, bound = 0; // Lowest from row or column
+		// TODO : Complete elimination
+		int minBox = (row < column) ? row : column; // Lowest from row or column
 		double multiplier = 1;
 		for (int i = 0 ; i < minBox ; i++) {
-			found = true;
-			if (matrix[i][i] == 0.0) {
-				found = false;
-				if (i > 0) {
-					if (matrix[i-1][i-1] == 0.0)
-						bound = 0;
-				}
-				else
-					bound = i + 1;
-				for (int a = bound ; a < row ; a++) {
-					if (matrix[a][i] != 0.0) {
-						this.swapRow(a,i);
-						found = true;
-					}
-				}
-			}
-			if (!found)
-				continue;
 			for (int b = i + 1 ; b < row ; b++) {
-				multiplier = (-1) * (matrix[b][i] / matrix[i][i]);
+				multiplier = (matrix[i][i] != 0) ? ((-1) * (matrix[b][i] / matrix[i][i])) : 0;
 				this.sumRow(i,b,multiplier);
 			}
 		}
@@ -170,7 +152,8 @@ public class Matrix {
 			if (matrix[i][i] == 0.0)
 				continue;
 			multiplier = matrix[i][i];
-			this.multiplyRow(i,1/multiplier);
+			if (multiplier != 0.0)
+				this.multiplyRow(i,1/multiplier);
 		}
 	}
 
@@ -195,6 +178,117 @@ public class Matrix {
 		return vectorResult;
 	}
 
+
+	public String eliminationRREFMatrix() {
+		// Make sure this matrix already on row reduced echelon form
+		this.gaussJordanElimination();
+		// Scan for inconsistent equation
+		boolean isUnique = false;
+		boolean zeroRowIndex[] = new boolean[row];
+		String writeString = "";
+		int zeroRowCount = 0;
+		for (int i = 0 ; i < row ; i++)
+			zeroRowIndex[i] = false;
+		for (int i = 0 ; i < row ; i++) {
+			boolean isRowNonZero = false;
+			for (int j = 0 ; j < column ; j++) {
+				if (matrix[i][j] != 0.0)
+					isRowNonZero = true;
+				if ((j == (column - 1)) && (matrix[i][j] != 0.0) && (!isRowNonZero))
+					return "Sistem persamaan tidak konsisten"; // FIXME : I think because the way GJE implemented, it may skip
+				if ((j == (column - 1)) && (!isRowNonZero)) {  // adding 0 0 1 0 1 2 and 0 0 1 0 1 3 which causing inconsistent system uncaught here
+					zeroRowCount++;
+					zeroRowIndex[i] = true;
+				}
+			}
+		}
+
+		// Case when zero matrix
+		if (zeroRowCount == row) {
+			System.out.println("Matriks adalah matriks nol");
+			return "Matriks adalah matriks nol";
+		}
+
+
+		// Zero row deletion
+		if (zeroRowCount > 0) {
+			double tempMatrix[][] = new double[row-zeroRowCount][column];
+			int rowWriteIndex = 0;
+			for (int i = 0 ; i < row ; i++) {
+				if (zeroRowIndex[i])
+					continue;
+				for (int j = 0 ; j < column ; j++)
+					tempMatrix[rowWriteIndex][j] = matrix[i][j];
+				rowWriteIndex++;
+			}
+			matrix = tempMatrix;
+			row -= zeroRowCount;
+		}
+
+		// Scan for unique solution
+		if (row == (column - 1)) {
+			isUnique = true;
+			for (int i = 0 ; i < row ; i++)
+				if (matrix[i][i] != 1.0)
+					isUnique = false;
+			if (isUnique) {
+				for (int i = (row-1) ; i >= 0 ; i--)
+					for (int j = (i-1) ; j >= 0 ; j--)
+						sumRow(i,j,-matrix[j][i]);
+				for (int i = 0 ; i < row ; i++) {
+						System.out.println("x" + Integer.toString(i+1) + " = " + Double.toString(matrix[i][column-1]));
+						writeString = writeString + "x" + Integer.toString(i+1) + " = " + Double.toString(matrix[i][column-1]) + "\n";
+				}
+			}
+			else
+				writeString = "Tidak ada solusi";
+			return writeString;
+		}
+
+		// Scan for non-unique solution
+		else {
+			// TODO : So much space for non square matrix edge case
+			boolean freeVariable[] = new boolean[column];
+			for (int i = 0 ; i < column ; i++)
+				freeVariable[i] = true;
+			System.out.println(Integer.toString(row) + " " + Integer.toString(column));
+			// FIXME : This implementation are not final, but basic idea
+			// TODO : Actually it wont add 1 1 0 3, x1 or x2 as free variable
+			for (int j = 0 ; j < column ; j++)
+				for (int i = 0 ; i < row ; i++)
+					if (matrix[i][j] != 0.0)
+						freeVariable[j] = false;
+
+			for (int j = 0 ; j < (column - 1) ; j++) {
+				if (freeVariable[j]) {
+					char tempChar = (char) (j+97);
+					System.out.println("x" + Integer.toString(j+1) + " = " + Character.toString(tempChar));
+					writeString = writeString + "x" + Integer.toString(j+1) + " = " + Character.toString(tempChar) + "\n";
+				}
+				else {
+					String solutionBuilder = " ";
+					for (int i = 0 ; i < row ; i++) {
+						if (matrix[i][j] != 0) {
+							for (int col = 0 ; col < (column - 1) ; col++) {
+								if ((matrix[i][col] != 0) && (col != j)) {
+									String doubleStringConvert = Double.toString(-matrix[i][col]);
+									if (doubleStringConvert.startsWith("-"))
+										doubleStringConvert = doubleStringConvert.replace("-","- ");
+									else
+										doubleStringConvert = "+ " + doubleStringConvert;
+									solutionBuilder = solutionBuilder + doubleStringConvert + " x" + Integer.toString(col+1) + " ";
+								}
+							}
+							System.out.println("x" + Integer.toString(j+1) + " = " + Double.toString(matrix[i][column-1]) + solutionBuilder);
+							writeString = writeString + "x" + Integer.toString(j+1) + " = " + Double.toString(matrix[i][column-1]) + solutionBuilder + "\n";
+							break;
+						}
+					}
+				}
+			}
+			return writeString;
+		}
+	}
 
 	// Determinant method
 	public double cofactorDet() {
@@ -266,7 +360,8 @@ public class Matrix {
 			// Multiplication Row Operation
 			multiplier = temp.matrix[i][i]; 	// Saving multiplier
 			det *= multiplier;					// Determinant will changed by multiplication factor x if multiplying with 1/x
-			temp.multiplyRow(i,1/multiplier);
+			if (multiplier != 0.0)
+				temp.multiplyRow(i,1/multiplier);
 			// Row Addition Operation
 			// No change in determinant value
 			for (int j = i + 1 ; j < row ; j++) {

@@ -130,7 +130,7 @@ public class CLI {
 
 	private static void systemOfLinearEqMenu() {
 		// Linear Equation Interface
-		String tempString = "";
+		String tempString = "", writeString = "";
 		System.out.println("\nSistem Persamaan Linier");
 		System.out.println("1. Metode eliminasi Gauss");
 		System.out.println("2. Metode eliminasi Gauss-Jordan");
@@ -163,6 +163,7 @@ public class CLI {
 		if (tempMatrix.getRow() < 11) {
 			System.out.println("Matriks masukkan");
 			tempMatrix.printMatrix();
+			writeString = "Matriks masukkan\n" + Matrix.matrixToString(tempMatrix) + "Hasil operasi\n";
 		}
 		System.out.println("Hasil operasi");
 
@@ -175,24 +176,33 @@ public class CLI {
 		}
 		isZeroDet = (tempDet.cofactorDet() == 0.0);
 
+		// Menu evaluation
 		if (tempString.equals("1") || tempString.equals("2")) {
 			if (tempString.equals("1"))
 				tempMatrix.gaussianElimination();
 			else
 				tempMatrix.gaussJordanElimination();
 			tempMatrix.printMatrix();
+			writeString = writeString + tempMatrix.eliminationRREFMatrix();
+			// TODO : Not done yet, non-unique solution currently not implemented
 		}
 		else if (tempString.equals("3") && !isZeroDet) {
 			// Inverse
 		}
 		else if (tempString.equals("4") && !isZeroDet) {
 			double tempVD[] = tempMatrix.cramerMethod();
-			for (int i = 0 ; i < tempMatrix.getRow() ; i++)
-				System.out.println(Double.toString(tempVD[i]));
+			for (int i = 0 ; i < tempMatrix.getRow() ; i++) {
+				System.out.println("x" + Integer.toString(i+1) + " = " + Double.toString(tempVD[i]));
+				writeString = writeString + "x" + Integer.toString(i+1) + " = " + Double.toString(tempVD[i]) + "\n";
+			}
 		}
 		else if (isZeroDet)
 			System.out.println("Determinan dari matriks adalah nol");
+		System.out.println("Simpan hasil dalam file? (y/n)");
+		tempString = CLI.stringInput();
 
+		if (tempString.equals("y") || tempString.equals("Y"))
+			dataWrite(writeString);
 	}
 
 	// Main Method
