@@ -12,10 +12,10 @@ public class MatriksInverse {
             M1.matrix[0][0] = (1 / M1.matrix[0][0]) * M1.matrix[0][0];
             return M1;
         }
-        determinan = (1 / Matrix.cofactorDet(M));
+        determinan = (1 / M.cofactorDet());
         for (i = 0; i < M.getRow(); i++) {
             for (j = 0; j < M.getColumn(); j++) {
-                kofaktor.matrix[i][j] = Matrix.cofactorDet(Minormat(M, i, j)) * ((i + j) % 2 == 0 ? 1 : -1);
+                kofaktor.matrix[i][j] = Minormat(M, i, j).cofactorDet() * ((i + j) % 2 == 0 ? 1 : -1);
             }
         }
 
@@ -43,7 +43,7 @@ public class MatriksInverse {
     public static Matrix Minormat(Matrix M, int k, int l) { // menghasilkan matriks minor dari entri i dan j
         Matrix Minor = new Matrix(M.getRow() - 1, M.getColumn() - 1);
         int i = 0, j = 0, m = 0, n = 0;
-        while (i < M.getRow()) {
+        while (i < M.getRow())  {
             if (i == l) {
                 i++;
                 continue;
