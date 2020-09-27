@@ -103,6 +103,32 @@ public class Matrix {
 		}
 	}
 
+
+	// Row & Column operation
+	public void swapRow(int r1, int r2) {
+		double tempDB = 0;
+		for (int j = 0 ; j < column ; j++) {
+			tempDB = matrix[r1][j];
+			matrix[r1][j] = matrix[r2][j];
+			matrix[r2][j] = tempDB;
+		}
+	}
+
+	public void multiplyRow(int rDst, double m) {
+		for (int j = 0 ; j < column ; j++)
+			matrix[rDst][j] *= m;
+	}
+
+	public void sumRow(int rSrc, int rDst, double m) {
+		for (int j = 0 ; j < column ; j++)
+			matrix[rDst][j] += (matrix[rSrc][j] * m);
+	}
+
+	public void replaceColumn(int cDst, double nColumn[]) {
+		for (int i = 0 ; i < row ; i++)
+			matrix[i][cDst] = nColumn[i];
+	}
+
 	// Determinant method
 	public double cofactorDet() {
 		// NaN flag if not square matrix
@@ -112,7 +138,7 @@ public class Matrix {
 
 		// Base case, 2x2 Matrix Determinant
 		if ((row == 2) && (column == 2))
-			return (matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]);
+			return (this.matrix[0][0] * this.matrix[1][1] - this.matrix[0][1] * this.matrix[1][0]);
 		// Recursive case
 		double det = 0;
 		boolean skip = false;
@@ -127,25 +153,34 @@ public class Matrix {
 						p++;
 						skip = true;
 					}
+<<<<<<< HEAD
 					minor.matrix[j][k] = matrix[p][k + 1];
+=======
+					minor.matrix[j][k] = this.matrix[p][k+1];
+>>>>>>> 674fbbf67d44d95f014adb9eae88ab4a90f9f455
 				}
 				p++;
 			}
-			det += (matrix[i][0] * minor.cofactorDet() * (1 - 2 * (i & 1)));
+			det += (this.matrix[i][0] * minor.cofactorDet() * (1 - 2 * (i & 1)));
 		}
 
 		return det;
 	}
 
 	public double reducedRowDet() {
+<<<<<<< HEAD
 		// FIXME : Potential RRD by using only multiplication to avoid floating point
 		// rounding error
+=======
+>>>>>>> 674fbbf67d44d95f014adb9eae88ab4a90f9f455
 		// NaN flag if not square matrix
 		if (row != column) {
 			return Double.NaN;
 		}
 
+		// Initalisation and copying matrix value
 		double det = 1, multiplier = 0;
+<<<<<<< HEAD
 		double temp[][] = matrix;
 		// FIXME : Doesnt work for 0 matrix
 		for (int i = 0; i < column; i++) {
@@ -160,8 +195,46 @@ public class Matrix {
 				multiplier = temp[j][i];
 				for (int q = 0; q < column; q++) // TODO optimize skip when RO not needed
 					temp[j][q] -= (temp[i][q] * multiplier);
+=======
+		Matrix temp = new Matrix(row,column);
+		for (int i = 0 ; i < row ; i++)
+			for (int j = 0 ; j < column ; j++)
+				temp.matrix[i][j] = this.matrix[i][j];
+
+		// Diagonal row swap, try make all diagonal non-zero
+		boolean negated = false;
+		for (int i = 0 ; i < row ; i++) {
+			if (temp.matrix[i][i] == 0.0) {
+				for (int a = 0 ; a < row ; a++) {
+					if (temp.matrix[a][i] != 0.0) {
+						temp.swapRow(a,i);
+						negated = !negated;			// Single swap correspond multiplication by (-1) on resulting determinant
+						break;
+					}
+				}
 			}
 		}
+
+		// Diagonal scan
+		for (int i = 0 ; i < row ; i++)
+			if (temp.matrix[i][i] == 0.0)
+				return 0.0;
+
+		for (int i = 0 ; i < column ; i++) {
+			// Multiplication Row Operation
+			multiplier = temp.matrix[i][i]; 	// Saving multiplier
+			det *= multiplier;					// Determinant will changed by multiplication factor x if multiplying with 1/x
+			temp.multiplyRow(i,1/multiplier);
+			// Row Addition Operation
+			// No change in determinant value
+			for (int j = i + 1 ; j < row ; j++) {
+				multiplier = temp.matrix[j][i];
+				temp.sumRow(i,j,-multiplier);
+>>>>>>> 674fbbf67d44d95f014adb9eae88ab4a90f9f455
+			}
+		}
+		if (negated)
+			return (-det);
 		return det;
 	}
 }

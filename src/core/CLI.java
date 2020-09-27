@@ -4,35 +4,39 @@ import java.util.Scanner;
 
 public class CLI {
 	// Internal variable
+	private static FileParser ioFile = new FileParser();
 	private static Scanner userInput = new Scanner(System.in);
-	private static String tempString = "", stringMemory = "";
 	private static boolean tempBoolean = false;
 	private static Double tempDouble = 0.0;
 	private static Matrix tempMatrix;
 	private static int tempInt = 0;
 
-
-	private static void stringInput() {
+	// Commonly used method
+	private static String stringInput() {
+		String tempString = "";
 		System.out.print(">> ");
 		tempString = userInput.nextLine();
+		return tempString;
 	}
 
 
-	// Commonly used method
 	private static Matrix matrixInput() {
-		FileParser readMatrixFile = new FileParser();
 		// Input type Interface
+		String tempString = "", stringMemory = "";
 		System.out.println("\nInput matriks");
 		System.out.println("1. File");
 		System.out.println("2. Keyboard");
 		while (true) {
-			CLI.stringInput();
+			tempString = CLI.stringInput();
 			// File Input
 			if (tempString.equals("1")) {
 				System.out.println("Masukan nama file (termasuk ekstensi)");
-				CLI.stringInput();
-				if (!readMatrixFile.readFile(tempString))
-					return Matrix.stringToMatrix(readMatrixFile.stringRead());
+				tempString = CLI.stringInput();
+				if (!ioFile.readFile(tempString)) {
+					stringMemory = ioFile.stringRead();
+					ioFile.closeFile();
+					return Matrix.stringToMatrix(stringMemory);
+				}
 				else
 					System.out.println("File tidak ditemukan");
 			}
@@ -79,17 +83,26 @@ public class CLI {
 		}
 	}
 
+	private static void dataWrite(String stream) {
+		String tempString = "";
+		System.out.print("Nama file : ");
+		tempString = userInput.nextLine();
+		ioFile.writeFile(tempString);
+		ioFile.stringWrite(stream);
+		ioFile.closeFile();
+	}
 
 	// Menu Method
 	private static void determinantMenu() {
 		// Determinant interface
+		String tempString = "", stringMemory = "";
 		System.out.println("\nDeterminan");
 		System.out.println("1. Metode Kofaktor");
 		System.out.println("2. Metode Reduksi Baris");
 		while (true) {
-			CLI.stringInput();
-			stringMemory = tempString;
+			tempString = CLI.stringInput();
 			if (tempString.equals("1") || tempString.equals("2")) {
+				stringMemory = tempString;
 				tempMatrix = CLI.matrixInput();
 				break;
 			}
@@ -97,8 +110,6 @@ public class CLI {
 				System.out.println("Masukkan tidak diketahui");
 		}
 		// Printing matrix
-		tempMatrix.printMatrix();
-		System.out.println(Integer.toString(tempMatrix.getRow()) + " " + Integer.toString(tempMatrix.getColumn()));
 		if (tempMatrix.getRow() < 11) {
 			System.out.println("Matriks masukkan");
 			tempMatrix.printMatrix();
@@ -110,12 +121,18 @@ public class CLI {
 			tempDouble = tempMatrix.reducedRowDet();
 
 		System.out.println("Determinan : " + Double.toString(tempDouble));
+		System.out.println("Simpan hasil dalam file? (y/n)");
+		tempString = CLI.stringInput();
+
+		if (tempString.equals("y") || tempString.equals("Y"))
+			dataWrite(Matrix.matrixToString(tempMatrix) + "Determinan : " + Double.toString(tempDouble));
 	}
 
 
 
 	// Main Method
 	public static void main(String args[]) {
+		String tempString = "";
 		// Main menu loop
 		while (true) {
 			// Main Menu interface
@@ -128,7 +145,7 @@ public class CLI {
 			System.out.println("6. Keluar");
 
 			// Input
-			CLI.stringInput();
+			tempString = CLI.stringInput();
 
 			// Test case
 			if (tempString.equals("1"))
@@ -176,9 +193,8 @@ public class CLI {
 //		}
 		// raw string
 		System.out.println("Raw string file");
-		FileParser read = new FileParser();
-		read.readFile("anotherone.txt");
-		String lul = read.stringRead();//.replaceAll("\\d","1");//.replaceAll("\\n", "");
+		ioFile.readFile("anotherone.txt");
+		String lul = ioFile.stringRead();//.replaceAll("\\d","1");//.replaceAll("\\n", "");
 		System.out.print(lul);
 		System.out.println();
 		Matrix tp = Matrix.stringToMatrix(lul);
@@ -194,8 +210,8 @@ public class CLI {
 		System.out.println("\nRaw string object");
 		System.out.print(prc);
 
-		read.writeFile("cool.txt");
-		read.stringWrite(prc);
+		ioFile.writeFile("cool2.txt");
+		ioFile.stringWrite(prc);
 		// ---------------- testing purpose ----------------
 	}
 
