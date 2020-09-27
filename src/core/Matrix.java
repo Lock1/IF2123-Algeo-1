@@ -153,11 +153,7 @@ public class Matrix {
 						p++;
 						skip = true;
 					}
-<<<<<<< HEAD
 					minor.matrix[j][k] = matrix[p][k + 1];
-=======
-					minor.matrix[j][k] = this.matrix[p][k+1];
->>>>>>> 674fbbf67d44d95f014adb9eae88ab4a90f9f455
 				}
 				p++;
 			}
@@ -168,11 +164,7 @@ public class Matrix {
 	}
 
 	public double reducedRowDet() {
-<<<<<<< HEAD
-		// FIXME : Potential RRD by using only multiplication to avoid floating point
-		// rounding error
-=======
->>>>>>> 674fbbf67d44d95f014adb9eae88ab4a90f9f455
+
 		// NaN flag if not square matrix
 		if (row != column) {
 			return Double.NaN;
@@ -180,22 +172,6 @@ public class Matrix {
 
 		// Initalisation and copying matrix value
 		double det = 1, multiplier = 0;
-<<<<<<< HEAD
-		double temp[][] = matrix;
-		// FIXME : Doesnt work for 0 matrix
-		for (int i = 0; i < column; i++) {
-			// Multiplication Row Operation
-			multiplier = temp[i][i]; // Saving multiplier
-			det *= multiplier; // Determinant will changed by multiplication factor x if multiplying with 1/x
-			for (int p = 0; p < column; p++)
-				temp[i][p] /= multiplier;
-			// Row Addition Operation
-			// No change in determinant value
-			for (int j = i + 1; j < row; j++) {
-				multiplier = temp[j][i];
-				for (int q = 0; q < column; q++) // TODO optimize skip when RO not needed
-					temp[j][q] -= (temp[i][q] * multiplier);
-=======
 		Matrix temp = new Matrix(row,column);
 		for (int i = 0 ; i < row ; i++)
 			for (int j = 0 ; j < column ; j++)
@@ -230,7 +206,6 @@ public class Matrix {
 			for (int j = i + 1 ; j < row ; j++) {
 				multiplier = temp.matrix[j][i];
 				temp.sumRow(i,j,-multiplier);
->>>>>>> 674fbbf67d44d95f014adb9eae88ab4a90f9f455
 			}
 		}
 		if (negated)
