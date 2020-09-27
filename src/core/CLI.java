@@ -128,7 +128,82 @@ public class CLI {
 			dataWrite(Matrix.matrixToString(tempMatrix) + "Determinan : " + Double.toString(tempDouble));
 	}
 
+	private static void systemOfLinearEqMenu() {
+		// Linear Equation Interface
+		String tempString = "", writeString = "";
+		System.out.println("\nSistem Persamaan Linier");
+		System.out.println("1. Metode eliminasi Gauss");
+		System.out.println("2. Metode eliminasi Gauss-Jordan");
+		System.out.println("3. Matriks balikan");
+		System.out.println("4. Kaidah Cramer");
 
+		// Matrix input
+		while (true) {
+			tempString = CLI.stringInput();
+			if (tempString.equals("1") || tempString.equals("2")) {
+				tempMatrix = CLI.matrixInput();
+				break;
+			}
+			// Cramer & Inverse require square matrix
+			else if (tempString.equals("3") || tempString.equals("4")) {
+				while (true) {
+					tempMatrix = CLI.matrixInput();
+					if (tempMatrix.getRow() == (tempMatrix.getColumn() - 1)) // Including augmented vector
+						break;
+					else
+						System.out.println("Matriks masukan bukan matriks persegi");
+				}
+				break;
+			}
+			else
+				System.out.println("Masukkan tidak diketahui");
+		}
+
+		// Printing matrix
+		if (tempMatrix.getRow() < 11) {
+			System.out.println("Matriks masukkan");
+			tempMatrix.printMatrix();
+			writeString = "Matriks masukkan\n" + Matrix.matrixToString(tempMatrix) + "Hasil operasi\n";
+		}
+		System.out.println("Hasil operasi");
+
+		// Determinant verification
+		Matrix tempDet = new Matrix(tempMatrix.getRow(), tempMatrix.getColumn() - 1);
+		boolean isZeroDet = false;
+		for (int i = 0 ; i < tempMatrix.getRow() ; i++) {
+			for (int j = 0 ; j < (tempMatrix.getColumn() - 1) ; j++)
+				tempDet.matrix[i][j] = tempMatrix.matrix[i][j];
+		}
+		isZeroDet = (tempDet.cofactorDet() == 0.0);
+
+		// Menu evaluation
+		if (tempString.equals("1") || tempString.equals("2")) {
+			if (tempString.equals("1"))
+				tempMatrix.gaussianElimination();
+			else
+				tempMatrix.gaussJordanElimination();
+			tempMatrix.printMatrix();
+			writeString = writeString + tempMatrix.eliminationRREFMatrix();
+			// TODO : Not done yet, non-unique solution currently not implemented
+		}
+		else if (tempString.equals("3") && !isZeroDet) {
+			// Inverse
+		}
+		else if (tempString.equals("4") && !isZeroDet) {
+			double tempVD[] = tempMatrix.cramerMethod();
+			for (int i = 0 ; i < tempMatrix.getRow() ; i++) {
+				System.out.println("x" + Integer.toString(i+1) + " = " + Double.toString(tempVD[i]));
+				writeString = writeString + "x" + Integer.toString(i+1) + " = " + Double.toString(tempVD[i]) + "\n";
+			}
+		}
+		else if (isZeroDet)
+			System.out.println("Determinan dari matriks adalah nol");
+		System.out.println("Simpan hasil dalam file? (y/n)");
+		tempString = CLI.stringInput();
+
+		if (tempString.equals("y") || tempString.equals("Y"))
+			dataWrite(writeString);
+	}
 
 	// Main Method
 	public static void main(String args[]) {
@@ -149,7 +224,7 @@ public class CLI {
 
 			// Test case
 			if (tempString.equals("1"))
-				System.out.println("TBA");
+				CLI.systemOfLinearEqMenu();
 			else if (tempString.equals("2"))
 				CLI.determinantMenu();
 			else if (tempString.equals("3"))
@@ -167,52 +242,6 @@ public class CLI {
 
 		// Exit sequence
 		userInput.close();
-
-
-		// ---------------- testing purpose ----------------
-		// det
-//		Matrix kek = new Matrix(2,2);
-//		for (int i = 0 ; i < 2 ; i++)
-//			for (int j = 0 ; j < 2 ; j++)
-//				kek.matrix[i][j] = input.nextInt();
-//
-//		System.out.println(Double.toString(kek.reducedRowDet()));
-
-		// file parser
-//		boolean exceptionRaised = false;
-//		System.out.println("TOPKEK");
-//		FileParser readInput = new FileParser();
-//		String fn = input.nextLine();
-//		exceptionRaised = readInput.writeFile(fn);
-//		if (!exceptionRaised) {
-//			readInput.stringWrite(input.nextLine());
-//			readInput.closeFile();
-//			readInput.readFile(fn);
-//			System.out.print(readInput.charStringRead());
-
-//		}
-		// raw string
-		System.out.println("Raw string file");
-		ioFile.readFile("anotherone.txt");
-		String lul = ioFile.stringRead();//.replaceAll("\\d","1");//.replaceAll("\\n", "");
-		System.out.print(lul);
-		System.out.println();
-		Matrix tp = Matrix.stringToMatrix(lul);
-//		for (int i = 0 ; i < lul.length() ; i++)
-//			System.out.println(Integer.toString(i) + " -> " + lul.charAt(i));
-
-		// object
-		System.out.println("Object");
-		tp.printMatrix();
-
-		// processed raw string
-		String prc = Matrix.matrixToString(tp);
-		System.out.println("\nRaw string object");
-		System.out.print(prc);
-
-		ioFile.writeFile("cool2.txt");
-		ioFile.stringWrite(prc);
-		// ---------------- testing purpose ----------------
 	}
 
 }
