@@ -27,7 +27,6 @@ public class Matrix {
 
 	// Conversion method
 	public static Matrix stringToMatrix(String stream) {
-		// FIXME : Just make it shorter
 		// Count Size
 		int rRow = 0, rCol = 0;
 		boolean readingN = false, firstRow = true;
@@ -75,7 +74,7 @@ public class Matrix {
 		String tempMString = "";
 		for (int i = 0; i < matrixData.getRow(); i++) {
 			for (int j = 0; j < matrixData.getColumn(); j++) {
-				tempMString = tempMString + Double.toString(matrixData.matrix[i][j]);
+				tempMString = tempMString + Matrix.doubleToStringFilter(matrixData.matrix[i][j]);
 				if (j != (matrixData.getColumn() - 1))
 					tempMString = tempMString + " ";
 			}
@@ -91,18 +90,33 @@ public class Matrix {
 	public void printMatrix() {
 		for (int i = 0; i < row; i++) {
 			for (int j = 0; j < column; j++) {
-				String rawString = Double.toString(matrix[i][j]);
-				if (rawString.endsWith(".0"))
-					rawString = rawString.replace(".0","");
-				if (rawString.equals("-0"))
-					rawString = rawString.replace("-0","0");
+				String rawString = Matrix.doubleToStringFilter(matrix[i][j]);
 				System.out.print(rawString + " ");
 			}
 			System.out.println();
 		}
 	}
 
+	private static String doubleToStringFilter(double entry) {
+		String doubleString = Double.toString(entry);
+		String filteredString = "";
+		if (doubleString.endsWith(".0"))
+			filteredString = doubleString.replace(".0","");
+		if (doubleString.equals("-0"))
+			filteredString = doubleString.replace("-0","0");
+		return filteredString;
+	}
 
+	private static String doubleToSolutionString(double entry) {
+		String doubleStringConvert = Double.toString(entry);
+		if (doubleStringConvert.startsWith("-"))
+			doubleStringConvert = doubleStringConvert.replace("-","- ");
+		else
+			doubleStringConvert = "+ " + doubleStringConvert;
+		if (doubleStringConvert.endsWith(".0"))
+			doubleStringConvert = doubleStringConvert.replace(".0","");
+		return doubleStringConvert;
+	}
 
 	// Row & Column operation
 	public void swapRow(int r1, int r2) {
@@ -177,7 +191,7 @@ public class Matrix {
 		return vectorResult;
 	}
 
-
+	// Complete elimination
 	public String eliminationRREFMatrix() {
 		// Make sure this matrix already reduced
 		this.gaussJordanElimination();
@@ -195,31 +209,24 @@ public class Matrix {
 		}
 
 		// Printing elimination result
-		System.out.println("Hasil operasi eliminasi");
-		this.printMatrix();
 		writeString = "Hasil operasi eliminasi\n" + Matrix.matrixToString(this) + "\n";
 
 		// Scan for inconsistent equation
-
 		int zeroRowCount = 0;
 		for (int i = 0 ; i < row ; i++) {
 			boolean isRowNonZero = false;
 			for (int j = 0 ; j < column - 1 ; j++)
 				if (matrix[i][j] != 0.0)
 					isRowNonZero = true;
-			if ((matrix[i][column-1] != 0.0) && (!isRowNonZero)) {
-				System.out.println("Sistem persamaan tidak konsisten");
+			if ((matrix[i][column-1] != 0.0) && (!isRowNonZero))
 				return "Sistem persamaan tidak konsisten";
-			}
 			else if (!isRowNonZero)
 				zeroRowCount++;
 		}
 
 		// Case when zero matrix
-		if (zeroRowCount == row) {
-			System.out.println("Matriks adalah matriks nol");
+		if (zeroRowCount == row)
 			return "Matriks adalah matriks nol\n";
-		}
 
 		// Checking relation with other variable
 		boolean freeVariable[] = new boolean[column-1];
@@ -230,57 +237,23 @@ public class Matrix {
 			for (int j = 0 ; j < (column - 1) ; j++) {
 				if (matrix[i][j] != 0.0) {
 					freeVariable[j] = false;
-					for (int a = j + 1 ; a < (column - 1) ; a++) {
-						if (matrix[i][a] != 0.0)
-							freeVariable[a] = true;
-					}
 					break;
 				}
-
 			}
 		}
 
-		// Hohoho
+		// Solution maker
 		for (int j = 0 ; j < (column - 1) ; j++) {
-			if (freeVariable[j]) {
-				char tempChar = (char) (j+97); // 97 is ASCII for 'a', use 65 for capital 'A'
-				System.out.println("x" + Integer.toString(j+1) + " = " + Character.toString(tempChar));
-				writeString = writeString + "x" + Integer.toString(j+1) + " = " + Character.toString(tempChar) + "\n";
-			}
+			if (freeVariable[j])
+				writeString = String.format("%sx%d = %s\n",writeString,(j+1), Character.toString((char) (j+97))); // 97 is ASCII for 'a', use 65 for capital 'A'
 			else {
 				String solutionBuilder = " ";
 				for (int i = 0 ; i < row ; i++) {
 					if (matrix[i][j] != 0) {
-						for (int col = 0 ; col < (column - 1) ; col++) {
-							// Case of non-free variable
-							if ((matrix[i][col] != 0) && (col != j) && !freeVariable[col]) {
-								String doubleStringConvert = Double.toString(-matrix[i][col]);
-								if (doubleStringConvert.startsWith("-"))
-									doubleStringConvert = doubleStringConvert.replace("-","- ");
-								else
-									doubleStringConvert = "+ " + doubleStringConvert;
-								if (doubleStringConvert.endsWith(".0"))
-									doubleStringConvert = doubleStringConvert.replace(".0","");
-								solutionBuilder = solutionBuilder + doubleStringConvert + "x" + Integer.toString(col+1) + " ";
-							}
-							// Case of free variable
-							else if ((matrix[i][col] != 0) && (col != j)) {
-								String doubleStringConvert = Double.toString(-matrix[i][col]);
-								if (doubleStringConvert.startsWith("-"))
-									doubleStringConvert = doubleStringConvert.replace("-","- ");
-								else
-									doubleStringConvert = "+ " + doubleStringConvert;
-								if (doubleStringConvert.endsWith(".0"))
-									doubleStringConvert = doubleStringConvert.replace(".0","");
-								char tempChar = (char) (col+97);
-								solutionBuilder = solutionBuilder + doubleStringConvert + Character.toString(tempChar) + " ";
-							}
-						}
-						String constantValue = Double.toString(matrix[i][column-1]);
-						if (constantValue.endsWith(".0"))
-							constantValue = constantValue.replace(".0","");
-						System.out.println("x" + Integer.toString(j+1) + " = " + constantValue + solutionBuilder);
-						writeString = writeString + "x" + Integer.toString(j+1) + " = " + constantValue + solutionBuilder + "\n";
+						for (int col = 0 ; col < (column - 1) ; col++)
+							if ((matrix[i][col] != 0) && (col != j))
+								solutionBuilder = String.format("%s%s%s ", solutionBuilder, Matrix.doubleToSolutionString(-matrix[i][col]), Character.toString((char) (col+97)));
+						writeString = String.format("%sx%d = %s%s\n",writeString,(j+1),Matrix.doubleToStringFilter(matrix[i][column-1]),solutionBuilder);
 						break;
 					}
 				}
@@ -325,7 +298,7 @@ public class Matrix {
 		return det;
 	}
 
-	public double reducedRowDet() { // FIXME : Linear combination
+	public double reducedRowDet() {
 		// NaN flag if not square matrix
 		if (row != column) {
 			return Double.NaN;

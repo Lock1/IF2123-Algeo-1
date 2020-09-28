@@ -13,9 +13,8 @@ public class CLI {
 
 	// Commonly used method
 	private static String stringInput() {
-		String tempString = "";
 		System.out.print(">> ");
-		tempString = userInput.nextLine();
+		String tempString = userInput.nextLine();
 		return tempString;
 	}
 
@@ -160,34 +159,29 @@ public class CLI {
 		}
 
 		// Printing matrix
-		if (tempMatrix.getRow() < 11) {
-			System.out.println("Matriks masukkan");
-			tempMatrix.printMatrix();
-			writeString = "Matriks masukkan\n" + Matrix.matrixToString(tempMatrix) + "Hasil operasi\n";
-		}
-		
+		if (tempMatrix.getRow() < 11)
+			writeString = "Matriks masukkan\n" + Matrix.matrixToString(tempMatrix) + "\n";
+
+
 
 		// Determinant verification
 		Matrix tempDet = new Matrix(tempMatrix.getRow(), tempMatrix.getColumn() - 1);
-		boolean isZeroDet = false;
 		for (int i = 0 ; i < tempMatrix.getRow() ; i++) {
 			for (int j = 0 ; j < (tempMatrix.getColumn() - 1) ; j++)
 				tempDet.matrix[i][j] = tempMatrix.matrix[i][j];
 		}
-		isZeroDet = (tempDet.cofactorDet() == 0.0);
+		boolean isZeroDet = (tempDet.cofactorDet() == 0.0);
 
 		// Menu evaluation
 		if (tempString.equals("1") || tempString.equals("2")) {
 			if (tempString.equals("1")) {
-				System.out.println("Hasil operasi elimininasi Gauss");
 				tempMatrix.gaussianElimination();
-				tempMatrix.printMatrix();
 				writeString = writeString + "Hasil operasi elimininasi Gauss\n" + Matrix.matrixToString(tempMatrix) + "\n";
 			}
 			else
 				tempMatrix.gaussJordanElimination();
 			writeString = writeString + tempMatrix.eliminationRREFMatrix();
-			// TODO : Not done yet, non-unique solution currently not implemented
+			System.out.print(writeString); // TODO : Move
 		}
 		else if (tempString.equals("3") && !isZeroDet) {
 			Matrix squareTempMatrix = new Matrix(tempMatrix.getRow(),tempMatrix.getColumn()-1);
@@ -195,7 +189,7 @@ public class CLI {
 				for (int j = 0 ; j < tempMatrix.getColumn() - 1 ; j++)
 					squareTempMatrix.matrix[i][j] = tempMatrix.matrix[i][j];
 			squareTempMatrix = Matrix.inverseMatrix(squareTempMatrix);
-			squareTempMatrix.printMatrix();
+			squareTempMatrix.printMatrix(); // TODO : Not done, multiplication by vector
 		}
 		else if (tempString.equals("4") && !isZeroDet) {
 			double tempVD[] = tempMatrix.cramerMethod();
