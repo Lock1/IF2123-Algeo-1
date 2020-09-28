@@ -369,17 +369,17 @@ public class Matrix {
 		determinan = (1 / M.cofactorDet());
 		for (i = 0; i < M.getRow(); i++) {
 			for (j = 0; j < M.getColumn(); j++) {
-				kofaktor.matrix[i][j] = Matrix.minorMatrix(M, i, j).cofactorDet() * ((i + j) % 2 == 0 ? 1 : -1);
+				kofaktor.matrix[i][j] = Matrix.minorMatrix(M, i, j).cofactorDet() * (((i + j) % 2 == 0) ? 1 : -1);
 			}
 		}
 		kofaktor.transposeMatrix();
+
 		M1 = kofaktor;
 		for (i = 0; i < M.getRow(); i++) {
 			for (j = 0; j < M.getColumn(); j++) {
 				M1.matrix[i][j] *= determinan;
 			}
 		}
-
 		return M1;
 	}
 
@@ -401,23 +401,23 @@ public class Matrix {
 		Matrix Minor = new Matrix(M.getRow() - 1, M.getColumn() - 1);
 		int i = 0, j = 0, m = 0, n = 0;
 		while (i < M.getRow())  {
-			if (i == l) {
+			if (i == k) {
 				i++;
 				continue;
 			}
-
+			j = 0;
+			n = 0;
 			while (j < M.getColumn()) {
-				if (j == k) {
+				if (j == l) {
 					j++;
 					continue;
 				}
-				Minor.matrix[n][m] = M.matrix[i][j];
+				Minor.matrix[m][n] = M.matrix[i][j];
 				j++;
-				m++;
-
+				n++;
 			}
 		i++;
-		n++;
+		m++;
 		}
 		return Minor;
 	}

@@ -183,7 +183,13 @@ public class CLI {
 				for (int j = 0 ; j < tempMatrix.getColumn() - 1 ; j++)
 					squareTempMatrix.matrix[i][j] = tempMatrix.matrix[i][j];
 			squareTempMatrix = Matrix.inverseMatrix(squareTempMatrix);
-			squareTempMatrix.printMatrix(); // TODO : Not done, multiplication by vector
+			writeString =  writeString + "Hasil invers\n" + Matrix.matrixToString(squareTempMatrix) + "Solusi\n";
+			for (int i = 0 ; i < squareTempMatrix.getRow() ; i++) {
+				double multiplicationResult = 0;
+				for (int j = 0 ; j < squareTempMatrix.getColumn() ; j++)
+					multiplicationResult += squareTempMatrix.matrix[i][j] * tempMatrix.matrix[j][tempMatrix.getColumn()-1];
+				writeString = String.format("%sx%d = %.3f\n", writeString, (i+1), multiplicationResult);
+			}
 		}
 		else if (tempString.equals("4") && !isZeroDet) {
 			double tempVD[] = tempMatrix.cramerMethod();
