@@ -193,7 +193,7 @@ public class Matrix {
 
 	// Complete elimination
 	public String eliminationRREFMatrix() {
-		// Make sure this matrix already reduced
+		// Make sure this matrix already reduced row echelon form
 		this.gaussJordanElimination();
 		String writeString = "";
 
@@ -219,7 +219,7 @@ public class Matrix {
 				if (matrix[i][j] != 0.0)
 					isRowNonZero = true;
 			if ((matrix[i][column-1] != 0.0) && (!isRowNonZero))
-				return "Sistem persamaan tidak konsisten";
+				return (writeString + "Sistem persamaan tidak konsisten\n");
 			else if (!isRowNonZero)
 				zeroRowCount++;
 		}
@@ -298,7 +298,7 @@ public class Matrix {
 		return det;
 	}
 
-	public double reducedRowDet() {
+	public double reducedRowDet() { // FIXME : Not done, ts.txt sill failed
 		// NaN flag if not square matrix
 		if (row != column) {
 			return Double.NaN;

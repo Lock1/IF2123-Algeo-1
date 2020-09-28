@@ -6,10 +6,6 @@ public class CLI {
 	// Internal variable
 	private static FileParser ioFile = new FileParser();
 	private static Scanner userInput = new Scanner(System.in);
-	private static boolean tempBoolean = false;
-	private static Double tempDouble = 0.0;
-	private static Matrix tempMatrix;
-	private static int tempInt = 0;
 
 	// Commonly used method
 	private static String stringInput() {
@@ -43,11 +39,12 @@ public class CLI {
 			// String Input
 			else if (tempString.equals("2")) {
 				// Size Row
+				int rowSize = 0;
 				while (true) {
 					System.out.print("Ukuran Baris : ");
 					tempString = userInput.nextLine();
 					try {
-						tempInt = Integer.parseInt(tempString);
+						rowSize = Integer.parseInt(tempString);
 						break;
 					}
 					catch (NumberFormatException nfe) {
@@ -57,20 +54,20 @@ public class CLI {
 				// User matrix element input
 				tempString = ""; // Flush current tempString
 				String tempConcat = "";
-				for (int i = 0 ; i < tempInt ; i++) {
-					System.out.print("Baris ke-" + Integer.toString(i+1) + " : ");
+				for (int i = 0 ; i < rowSize ; i++) {
+					System.out.print(String.format("Baris ke-%d : ",(i+1)));
 					tempConcat = userInput.nextLine().trim();
 					tempString = tempString + (tempConcat + "\n");
 				}
 
 				// Internal parse, no regex :<
-				tempBoolean = true;
+				boolean isValidMatrixString = true;
 				for (int i = 0 ; i < tempString.length() ; i++)
-					if (!Character.toString(tempString.charAt(i)).matches("[0-9]|\\.|\n| "))
-						tempBoolean = false;
+					if (!Character.toString(tempString.charAt(i)).matches("-|[0-9]|\\.|\n| "))
+						isValidMatrixString = false;
 
 				// Returning branch
-				if (tempBoolean)
+				if (isValidMatrixString)
 					return Matrix.stringToMatrix(tempString);
 				else
 					return new Matrix(0,0);
@@ -83,25 +80,28 @@ public class CLI {
 	}
 
 	private static void dataWrite(String stream) {
-		String tempString = "";
-		System.out.print("Nama file : ");
-		tempString = userInput.nextLine();
-		ioFile.writeFile(tempString);
-		ioFile.stringWrite(stream);
-		ioFile.closeFile();
+		System.out.println("Simpan hasil dalam file? (y/n)");
+		String tempString = CLI.stringInput();
+		if (tempString.equals("y") || tempString.equals("Y")) {
+			System.out.print("Nama file : ");
+			tempString = userInput.nextLine();
+			ioFile.writeFile(tempString);
+			ioFile.stringWrite(stream);
+			ioFile.closeFile();
+		}
 	}
 
 	// Menu Method
 	private static void determinantMenu() {
 		// Determinant interface
-		String tempString = "", stringMemory = "";
+		String tempString = "", writeString = "";
+		Matrix tempMatrix;
 		System.out.println("\nDeterminan");
 		System.out.println("1. Metode Kofaktor");
 		System.out.println("2. Metode Reduksi Baris");
 		while (true) {
 			tempString = CLI.stringInput();
 			if (tempString.equals("1") || tempString.equals("2")) {
-				stringMemory = tempString;
 				tempMatrix = CLI.matrixInput();
 				break;
 			}
@@ -109,27 +109,26 @@ public class CLI {
 				System.out.println("Masukkan tidak diketahui");
 		}
 		// Printing matrix
-		if (tempMatrix.getRow() < 11) {
-			System.out.println("Matriks masukkan");
-			tempMatrix.printMatrix();
-		}
+		if (tempMatrix.getRow() < 11)
+			writeString = "Matriks masukkan\n" + Matrix.matrixToString(tempMatrix);
+
 		// Deteminant calculation
-		if (stringMemory.equals("1"))
-			tempDouble = tempMatrix.cofactorDet();
+		double determinantResult = 0.0;
+		if (tempString.equals("1"))
+			determinantResult = tempMatrix.cofactorDet();
 		else
-			tempDouble = tempMatrix.reducedRowDet();
+			determinantResult = tempMatrix.reducedRowDet();
 
-		System.out.println("Determinan : " + Double.toString(tempDouble));
-		System.out.println("Simpan hasil dalam file? (y/n)");
-		tempString = CLI.stringInput();
-
-		if (tempString.equals("y") || tempString.equals("Y"))
-			dataWrite(Matrix.matrixToString(tempMatrix) + "Determinan : " + Double.toString(tempDouble));
+		// Output
+		writeString = String.format("%sDeterminan : %.3f", writeString, determinantResult);
+		System.out.println(writeString);
+		dataWrite(writeString);
 	}
 
 	private static void systemOfLinearEqMenu() {
 		// Linear Equation Interface
 		String tempString = "", writeString = "";
+		Matrix tempMatrix;
 		System.out.println("\nSistem Persamaan Linier");
 		System.out.println("1. Metode eliminasi Gauss");
 		System.out.println("2. Metode eliminasi Gauss-Jordan");
@@ -162,8 +161,6 @@ public class CLI {
 		if (tempMatrix.getRow() < 11)
 			writeString = "Matriks masukkan\n" + Matrix.matrixToString(tempMatrix) + "\n";
 
-
-
 		// Determinant verification
 		Matrix tempDet = new Matrix(tempMatrix.getRow(), tempMatrix.getColumn() - 1);
 		for (int i = 0 ; i < tempMatrix.getRow() ; i++) {
@@ -178,10 +175,7 @@ public class CLI {
 				tempMatrix.gaussianElimination();
 				writeString = writeString + "Hasil operasi elimininasi Gauss\n" + Matrix.matrixToString(tempMatrix) + "\n";
 			}
-			else
-				tempMatrix.gaussJordanElimination();
 			writeString = writeString + tempMatrix.eliminationRREFMatrix();
-			System.out.print(writeString); // TODO : Move
 		}
 		else if (tempString.equals("3") && !isZeroDet) {
 			Matrix squareTempMatrix = new Matrix(tempMatrix.getRow(),tempMatrix.getColumn()-1);
@@ -193,18 +187,13 @@ public class CLI {
 		}
 		else if (tempString.equals("4") && !isZeroDet) {
 			double tempVD[] = tempMatrix.cramerMethod();
-			for (int i = 0 ; i < tempMatrix.getRow() ; i++) {
-				System.out.println("x" + Integer.toString(i+1) + " = " + Double.toString(tempVD[i]));
-				writeString = writeString + "x" + Integer.toString(i+1) + " = " + Double.toString(tempVD[i]) + "\n";
-			}
+			for (int i = 0 ; i < tempMatrix.getRow() ; i++)
+				writeString = String.format("%sx%d = %.2f\n", writeString, (i+1), tempVD[i]);
 		}
 		else if (isZeroDet)
 			System.out.println("Determinan dari matriks adalah nol");
-		System.out.println("Simpan hasil dalam file? (y/n)");
-		tempString = CLI.stringInput();
-
-		if (tempString.equals("y") || tempString.equals("Y"))
-			dataWrite(writeString);
+		System.out.print(writeString);
+		dataWrite(writeString);
 	}
 
 	// Main Method
