@@ -99,12 +99,11 @@ public class Matrix {
 
 	private static String doubleToStringFilter(double entry) {
 		String doubleString = Double.toString(entry);
-		String filteredString = "";
 		if (doubleString.endsWith(".0"))
-			filteredString = doubleString.replace(".0","");
+			doubleString = doubleString.replace(".0","");
 		if (doubleString.equals("-0"))
-			filteredString = doubleString.replace("-0","0");
-		return filteredString;
+			doubleString = doubleString.replace("-0","0");
+		return doubleString;
 	}
 
 	private static String doubleToSolutionString(double entry) {
@@ -191,11 +190,12 @@ public class Matrix {
 		return vectorResult;
 	}
 
+
+
 	// Complete elimination
-	public String eliminationRREFMatrix() {
+	public void completeGaussJordanElimination() {
 		// Make sure this matrix already reduced row echelon form
 		this.gaussJordanElimination();
-		String writeString = "";
 
 		// Gauss-Jordan Elimination for upper diagonal
 		for (int i = row-1 ; i >= 0 ; i--) {
@@ -207,7 +207,13 @@ public class Matrix {
 				}
 			}
 		}
+	}
 
+
+	public String eliminationRREFMatrix() {
+		this.completeGaussJordanElimination();
+		this.printMatrix();
+		String writeString = "";
 		// Printing elimination result
 		writeString = "Hasil operasi eliminasi\n" + Matrix.matrixToString(this) + "\n";
 
