@@ -202,6 +202,33 @@ public class CLI {
 		dataWrite(writeString);
 	}
 
+	private static void inverseMenu() {
+		String writeString = "";
+		Matrix tempMatrix;
+		System.out.println("Invers matriks");
+		while (true) {
+			tempMatrix = CLI.matrixInput();
+			if (tempMatrix.getColumn() != tempMatrix.getRow())
+				System.out.println("Matriks masukkan bukanlah matriks persegi");
+			else
+				break;
+		}
+		// Printing matrix
+		if (tempMatrix.getRow() < 11)
+			writeString = "Matriks masukkan\n" + Matrix.matrixToString(tempMatrix);
+
+		// Inverse calculation
+		if (tempMatrix.cofactorDet() != 0) {
+			tempMatrix = Matrix.inverseMatrix(tempMatrix);
+			writeString = writeString + "Hasil Invers\n"+ Matrix.matrixToString(tempMatrix);
+		}
+		else
+			writeString = writeString + "Determinan matriks adalah 0\n";
+
+		System.out.println(writeString);
+		dataWrite(writeString);
+	}
+
 	// Main Method
 	public static void main(String args[]) {
 		String tempString = "";
@@ -225,7 +252,7 @@ public class CLI {
 			else if (tempString.equals("2"))
 				CLI.determinantMenu();
 			else if (tempString.equals("3"))
-				System.out.println("TBA");
+				CLI.inverseMenu();
 			else if (tempString.equals("4"))
 				System.out.println("TBA");
 			else if (tempString.equals("5"))
