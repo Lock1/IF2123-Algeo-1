@@ -165,7 +165,7 @@ public class CLI {
 			tempMatrix.printMatrix();
 			writeString = "Matriks masukkan\n" + Matrix.matrixToString(tempMatrix) + "Hasil operasi\n";
 		}
-		System.out.println("Hasil operasi");
+		
 
 		// Determinant verification
 		Matrix tempDet = new Matrix(tempMatrix.getRow(), tempMatrix.getColumn() - 1);
@@ -178,16 +178,24 @@ public class CLI {
 
 		// Menu evaluation
 		if (tempString.equals("1") || tempString.equals("2")) {
-			if (tempString.equals("1"))
+			if (tempString.equals("1")) {
+				System.out.println("Hasil operasi elimininasi Gauss");
 				tempMatrix.gaussianElimination();
+				tempMatrix.printMatrix();
+				writeString = writeString + "Hasil operasi elimininasi Gauss\n" + Matrix.matrixToString(tempMatrix) + "\n";
+			}
 			else
 				tempMatrix.gaussJordanElimination();
-			tempMatrix.printMatrix();
 			writeString = writeString + tempMatrix.eliminationRREFMatrix();
 			// TODO : Not done yet, non-unique solution currently not implemented
 		}
 		else if (tempString.equals("3") && !isZeroDet) {
-			// Inverse
+			Matrix squareTempMatrix = new Matrix(tempMatrix.getRow(),tempMatrix.getColumn()-1);
+			for (int i = 0 ; i < tempMatrix.getRow() ; i++)
+				for (int j = 0 ; j < tempMatrix.getColumn() - 1 ; j++)
+					squareTempMatrix.matrix[i][j] = tempMatrix.matrix[i][j];
+			squareTempMatrix = Matrix.inverseMatrix(squareTempMatrix);
+			squareTempMatrix.printMatrix();
 		}
 		else if (tempString.equals("4") && !isZeroDet) {
 			double tempVD[] = tempMatrix.cramerMethod();
