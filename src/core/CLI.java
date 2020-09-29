@@ -229,6 +229,23 @@ public class CLI {
 		dataWrite(writeString);
 	}
 
+	// Put Interpolation here // TODO : Warning, interpolation file read is need to be checked
+	private static void interpolationMenu() {
+		System.out.println("Interpolasi polinom");
+		System.out.println("");
+		Matrix tempMatrix = CLI.matrixInput(); // TODO : No handler
+		double polyCoefficient[] = Matrix.polynomialInterpolation(tempMatrix);
+		for (int i = 0 ; i < polyCoefficient.length ; i++)
+			System.out.println(polyCoefficient[i]);
+	} // TODO : File Output
+	
+	private static void regressionMenu() {
+		System.out.println("Regresi linier berganda");
+		Matrix tempMatrix = CLI.matrixInput();
+		tempMatrix = Matrix.regresi(tempMatrix);
+		tempMatrix.printMatrix();
+	} // TODO : File output
+	
 	// Main Method
 	public static void main(String args[]) {
 		String tempString = "";
@@ -254,9 +271,9 @@ public class CLI {
 			else if (tempString.equals("3"))
 				CLI.inverseMenu();
 			else if (tempString.equals("4"))
-				System.out.println("TBA");
+				CLI.interpolationMenu();
 			else if (tempString.equals("5"))
-				System.out.println("TBA");
+				CLI.regressionMenu();
 			else if(tempString.equals("6"))
 				break;
 			else
