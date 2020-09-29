@@ -1,6 +1,7 @@
 package core;
 
 import java.util.Scanner;
+import java.lang.Math;
 
 public class CLI {
 	// Internal variable
@@ -60,17 +61,7 @@ public class CLI {
 					tempString = tempString + (tempConcat + "\n");
 				}
 
-				// Internal parse, no regex :<
-				boolean isValidMatrixString = true;
-				for (int i = 0 ; i < tempString.length() ; i++)
-					if (!Character.toString(tempString.charAt(i)).matches("-|[0-9]|\\.|\n| "))
-						isValidMatrixString = false;
-
-				// Returning branch
-				if (isValidMatrixString)
-					return Matrix.stringToMatrix(tempString);
-				else
-					return new Matrix(0,0);
+				return Matrix.stringToMatrix(tempString);
 			}
 
 			// Invalid Input
@@ -79,6 +70,62 @@ public class CLI {
 		}
 	}
 
+	private static Matrix interpolationMatrixInput() {
+		// Input type Interface
+		String tempString = "", stringMemory = "";
+		System.out.println("\nInput sampel titik");
+		System.out.println("1. File");
+		System.out.println("2. Keyboard");
+		while (true) {
+			tempString = CLI.stringInput();
+			// File Input
+			if (tempString.equals("1")) {
+				System.out.println("Masukan nama file (termasuk ekstensi)");
+				tempString = CLI.stringInput();
+				if (!ioFile.readFile(tempString)) {
+					stringMemory = ioFile.stringRead();
+					ioFile.closeFile();
+					return Matrix.stringToMatrix(stringMemory);
+				}
+				else
+					System.out.println("File tidak ditemukan");
+			}
+
+			// String Input
+			else if (tempString.equals("2")) {
+				// Size Row
+				int rowSize = 0;
+				while (true) {
+					System.out.print("Derajat polinom : ");
+					tempString = userInput.nextLine();
+					try {
+						rowSize = Integer.parseInt(tempString);
+						break;
+					}
+					catch (NumberFormatException nfe) {
+						System.out.println("Masukan tidak diketahui");
+					}
+				}
+				// User matrix element input
+				tempString = ""; // Flush current tempString
+				String tempConcat = "";
+				for (int i = 0 ; i < rowSize + 1 ; i++) {
+					System.out.print(String.format("Titik ke-%d : ",(i+1)));
+					tempConcat = userInput.nextLine().trim();
+					tempString = tempString + (tempConcat + "\n");
+				}
+				System.out.print(String.format("Nilai x yang akan ditaksir : "));
+				tempConcat = userInput.nextLine().trim();
+				tempString = tempString + (tempConcat + "\n");
+
+				return Matrix.stringToMatrix(tempString);
+			}
+
+			// Invalid Input
+			else
+				System.out.println("Masukan tidak diketahui");
+		}
+	}
 	private static void dataWrite(String stream) {
 		System.out.println("Simpan hasil dalam file? (y/n)");
 		String tempString = CLI.stringInput();
@@ -96,7 +143,7 @@ public class CLI {
 		// Determinant interface
 		String tempString = "", writeString = "";
 		Matrix tempMatrix;
-		System.out.println("\nDeterminan");
+		System.out.println("\n-- Determinan --");
 		System.out.println("1. Metode Kofaktor");
 		System.out.println("2. Metode Reduksi Baris");
 		while (true) {
@@ -129,7 +176,7 @@ public class CLI {
 		// Linear Equation Interface
 		String tempString = "", writeString = "";
 		Matrix tempMatrix;
-		System.out.println("\nSistem Persamaan Linier");
+		System.out.println("\n-- Sistem Persamaan Linier --");
 		System.out.println("1. Metode eliminasi Gauss");
 		System.out.println("2. Metode eliminasi Gauss-Jordan");
 		System.out.println("3. Matriks balikan");
@@ -205,7 +252,7 @@ public class CLI {
 	private static void inverseMenu() {
 		String writeString = "";
 		Matrix tempMatrix;
-		System.out.println("Invers matriks");
+		System.out.println("-- Invers matriks --");
 		while (true) {
 			tempMatrix = CLI.matrixInput();
 			if (tempMatrix.getColumn() != tempMatrix.getRow())
@@ -231,21 +278,40 @@ public class CLI {
 
 	// Put Interpolation here // TODO : Warning, interpolation file read is need to be checked
 	private static void interpolationMenu() {
-		System.out.println("Interpolasi polinom");
-		System.out.println("");
-		Matrix tempMatrix = CLI.matrixInput(); // TODO : No handler
+		System.out.println("-- Interpolasi polinom --");
+		System.out.print("Titik sampel input n + 1 untuk polinom derajat n");
+		Matrix tempMatrix = CLI.interpolationMatrixInput();
+		double estimate[] = new double[2];
+		estimate[0] = tempMatrix.matrix[tempMatrix.getRow() - 1][0];
+		estimate[1] = 0.0;
+		tempMatrix.setRow(tempMatrix.getRow() - 1);
 		double polyCoefficient[] = Matrix.polynomialInterpolation(tempMatrix);
 		for (int i = 0 ; i < polyCoefficient.length ; i++)
-			System.out.println(polyCoefficient[i]);
+			estimate[1] += polyCoefficient[i] * Math.pow(estimate[0], i);
+		String functionBuilder = "f(x) = ";
+		for (int i = polyCoefficient.length - 1 ; i >= 0  ; i--) {
+			if ((polyCoefficient[i] > 0) && (i != (polyCoefficient.length - 1)))
+				functionBuilder = String.format("%s+ %.2fx^%d ",functionBuilder,polyCoefficient[i],i);
+			else if (polyCoefficient[i] > 0)
+				functionBuilder = String.format("%s%.2fx^%d ",functionBuilder,polyCoefficient[i],i);
+			else if (polyCoefficient[i] == 0.0)
+				functionBuilder = String.format("%s",functionBuilder);
+			else
+				functionBuilder = String.format("%s- %.2fx^%d ",functionBuilder,-polyCoefficient[i],i);
+		}
+		System.out.println(functionBuilder);
+		System.out.println(String.format("Hasil estimasi f(%.3f) = %.3f\n", estimate[0], estimate[1]));
 	} // TODO : File Output
-	
+
 	private static void regressionMenu() {
-		System.out.println("Regresi linier berganda");
+		System.out.println("-- Regresi linier berganda --");
 		Matrix tempMatrix = CLI.matrixInput();
 		tempMatrix = Matrix.regresi(tempMatrix);
-		tempMatrix.printMatrix();
+		double tempVector[] = tempMatrix.cramerMethod();
+		for (int i = 0 ; i < tempVector.length ; i++) // TODO : Debug
+			System.out.println(tempVector[i]);
 	} // TODO : File output
-	
+
 	// Main Method
 	public static void main(String args[]) {
 		String tempString = "";

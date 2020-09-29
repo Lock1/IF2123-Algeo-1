@@ -363,7 +363,7 @@ public class Matrix {
 		int polyDegree = pointMatrix.getRow() - 1;
 		Matrix coefficientMatrix = new Matrix(polyDegree + 1,polyDegree + 2);
 		// Copying information on point matrix and calculating coefficient
-		for (int i = 0 ; i < polyDegree + 1 ; i++)
+		for (int i = 0 ; i < polyDegree + 1; i++)
 			for (int j = 0 ; j < polyDegree + 1 ; j++)
 				coefficientMatrix.matrix[i][j] = Math.pow(pointMatrix.matrix[i][0], j);
 		for (int i = 0 ; i < polyDegree + 1 ; i++)
@@ -373,7 +373,7 @@ public class Matrix {
 			coefficientVector[i] = coefficientMatrix.matrix[i][polyDegree + 1];
 		return coefficientVector;
 	}
-	
+
 
 	// Inverse method
 	public static Matrix inverseMatrix(Matrix M) {
@@ -440,10 +440,11 @@ public class Matrix {
 		}
 		return Minor;
 	}
-	
+
 	// Regression method
 	public static Matrix regresi(Matrix m) {
         // asumsi matriks sudah augmented
+		m.printMatrix();
         Matrix temp ;
         Matrix regres ;
         int n , i , j = 0, l = 0;
@@ -457,10 +458,10 @@ public class Matrix {
                 kali = 0 ;
                 j = 0 ;
                 while (j < n   ) {
-                    if (j == 0 && i == 0 ) {
+                    if (l == 0 && i == 0 ) {
                         kali = n ;
                     }
-                    else if ( j == 0 || i == 0 ) {
+                    else if ( l == 0 || i == 0 ) {
                         kali += temp.matrix[j][i] ;
                     }
                     else {
@@ -478,8 +479,13 @@ public class Matrix {
             }
             l++;
         }
-        regres.completeGaussJordanElimination() ;
+//        regres.printMatrix();
+//        regres.completeGaussJordanElimination() ; // DEBUG
+		// for (int a = 0 ; a < regres.getRow() ; a++)
+		// 	for (int b = 0 ; b < regres.getColumn() ; b++)
+		// 		regres.matrix[a][b] = (regres.matrix[a][b] < 0.0001) ? 0 : regres.matrix[a][b];
+
         return regres ;
     }
-	
+
 }
