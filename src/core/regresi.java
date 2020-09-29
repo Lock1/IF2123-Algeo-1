@@ -9,7 +9,7 @@ public class regresi {
         double temp[][] ; 
         double regres[][] ; 
         int n , i , j = 0, sum = 0, k = 0, l = 0;
-		int kali = 0;
+		double kali = 0;
         temp = CLI.matrixInput() ; 
         n = temp.length ; 
         // mengisi sisanya 
@@ -18,10 +18,10 @@ public class regresi {
                 kali = 0 ;
                 j = 0 ;
                 while (j < n   ) {
-                    if (j == 0 && i == 0 ) {
+                    if (l == 0 && i == 0 ) {
                         kali = n ;
                     }
-                    else if ( j == 0 || i == 0 ) {
+                    else if ( l == 0 || i == 0 ) {
                         kali += temp[j][i] ;
                     }
                     else {
