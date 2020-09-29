@@ -1,5 +1,7 @@
 package core;
 
+import java.lang.Math;
+
 public class Matrix {
 	// Attribute
 	private int row;
@@ -354,7 +356,24 @@ public class Matrix {
 		return det;
 	}
 
-
+	// Interpolation method
+	public static double[] polynomialInterpolation(Matrix pointMatrix) {
+		// Point Matrix is Nx2 matrix, holding point on every row
+		double coefficientVector[] = new double[pointMatrix.getRow()];
+		int polyDegree = pointMatrix.getRow() - 1;
+		Matrix coefficientMatrix = new Matrix(polyDegree + 1,polyDegree + 2);
+		// Copying information on point matrix and calculating coefficient
+		for (int i = 0 ; i < polyDegree + 1 ; i++)
+			for (int j = 0 ; j < polyDegree + 1 ; j++)
+				coefficientMatrix.matrix[i][j] = Math.pow(pointMatrix.matrix[i][0], j);
+		for (int i = 0 ; i < polyDegree + 1 ; i++)
+			coefficientMatrix.matrix[i][polyDegree + 1] = pointMatrix.matrix[i][1];
+		coefficientMatrix.completeGaussJordanElimination();
+		for (int i = 0 ; i < coefficientMatrix.getRow() ; i++)
+			coefficientVector[i] = coefficientMatrix.matrix[i][polyDegree + 1];
+		return coefficientVector;
+	}
+	
 
 	// Inverse method
 	public static Matrix inverseMatrix(Matrix M) {
@@ -421,4 +440,46 @@ public class Matrix {
 		}
 		return Minor;
 	}
+	
+	// Regression method
+	public static Matrix regresi(Matrix m) {
+        // asumsi matriks sudah augmented
+        Matrix temp ;
+        Matrix regres ;
+        int n , i , j = 0, l = 0;
+        double kali = 0;
+        temp = m ;
+        regres = m ;
+        n = temp.getRow() ;
+        // mengisi sisanya
+        while ( l < n) {
+            for (i = 0 ; i <= n  ; i++) {
+                kali = 0 ;
+                j = 0 ;
+                while (j < n   ) {
+                    if (j == 0 && i == 0 ) {
+                        kali = n ;
+                    }
+                    else if ( j == 0 || i == 0 ) {
+                        kali += temp.matrix[j][i] ;
+                    }
+                    else {
+
+                        kali += temp.matrix[j][i]*temp.matrix[j][l] ;
+                    }
+
+                    j++;
+
+                }
+                regres.matrix[l][i] = kali ;
+
+
+
+            }
+            l++;
+        }
+        regres.completeGaussJordanElimination() ;
+        return regres ;
+    }
+	
 }
