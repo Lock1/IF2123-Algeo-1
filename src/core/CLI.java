@@ -276,8 +276,9 @@ public class CLI {
 		dataWrite(writeString);
 	}
 
-	// Put Interpolation here // TODO : Warning, interpolation file read is need to be checked
+	// Put Interpolation here
 	private static void interpolationMenu() {
+		String writeString = "";
 		System.out.println("-- Interpolasi polinom --");
 		System.out.print("Titik sampel input n + 1 untuk polinom derajat n");
 		Matrix tempMatrix = CLI.interpolationMatrixInput();
@@ -285,6 +286,7 @@ public class CLI {
 		estimate[0] = tempMatrix.matrix[tempMatrix.getRow() - 1][0];
 		estimate[1] = 0.0;
 		tempMatrix.setRow(tempMatrix.getRow() - 1);
+		writeString = "Sampel titik\n" + Matrix.matrixToString(tempMatrix);
 		double polyCoefficient[] = Matrix.polynomialInterpolation(tempMatrix);
 		for (int i = 0 ; i < polyCoefficient.length ; i++)
 			estimate[1] += polyCoefficient[i] * Math.pow(estimate[0], i);
@@ -299,18 +301,24 @@ public class CLI {
 			else
 				functionBuilder = String.format("%s- %.2fx^%d ",functionBuilder,-polyCoefficient[i],i);
 		}
-		System.out.println(functionBuilder);
-		System.out.println(String.format("Hasil estimasi f(%.3f) = %.3f\n", estimate[0], estimate[1]));
-	} // TODO : File Output
+		writeString = writeString + "Hasil polinom interpolasi\n" + functionBuilder + "\n" + String.format("Hasil estimasi f(%.3f) = %.3f\n", estimate[0], estimate[1]);
+		System.out.println(writeString);
+		CLI.dataWrite(writeString);
+	}
 
 	private static void regressionMenu() {
+		String writeString = "";
 		System.out.println("-- Regresi linier berganda --");
 		Matrix tempMatrix = CLI.matrixInput();
+		writeString = "Matriks masukkan\n" + Matrix.matrixToString(tempMatrix);
 		tempMatrix = Matrix.regresi(tempMatrix);
 		double tempVector[] = tempMatrix.cramerMethod();
-		for (int i = 0 ; i < tempVector.length ; i++) // TODO : Debug
-			System.out.println(tempVector[i]);
-	} // TODO : File output
+		writeString = writeString + "Hasil Regresi\n";
+		for (int i = 0 ; i < tempVector.length ; i++)
+			writeString = writeString + Double.toString(tempVector[i]) + "\n";
+		System.out.println(writeString);
+		CLI.dataWrite(writeString);
+	}
 
 	// Main Method
 	public static void main(String args[]) {

@@ -119,6 +119,15 @@ public class Matrix {
 		return doubleStringConvert;
 	}
 
+	public boolean isDiagonalNonZero() {
+
+		for (int i = 0 ; i < row ; i++) {
+			if (matrix[i][i] == 0.0)
+				return false;
+		}
+		return true;
+	}
+
 	// Row & Column operation
 	public void swapRow(int r1, int r2) {
 		double tempDB = 0;
@@ -306,7 +315,7 @@ public class Matrix {
 		return det;
 	}
 
-	public double reducedRowDet() { // FIXME : Not done, ts.txt sill failed
+	public double reducedRowDet() {
 		// NaN flag if not square matrix
 		if (row != column) {
 			return Double.NaN;
@@ -321,16 +330,22 @@ public class Matrix {
 
 		// Diagonal row swap, try make all diagonal non-zero
 		boolean negated = false;
-		for (int i = 0 ; i < row ; i++) {
-			if (temp.matrix[i][i] == 0.0) {
-				for (int a = i + 1 ; a < row ; a++) {
-					if (temp.matrix[a][i] != 0.0) {
-						temp.swapRow(a,i);
-						negated = !negated;			// Single swap correspond multiplication by (-1) on resulting determinant
-						break;
+		int checkCount = 0, indexPrevSwap = -1;
+		while ((!temp.isDiagonalNonZero()) && (checkCount < 50)) { // Brute force but whatever
+			for (int i = 0 ; i < row ; i++) {
+				if (temp.matrix[i][i] == 0.0) {
+					for (int a = 0 ; a < row ; a++) {
+						if ((temp.matrix[a][i] != 0.0) && (a != indexPrevSwap)) {
+							temp.swapRow(a,i);
+							indexPrevSwap = a;
+							negated = !negated;			// Single swap correspond multiplication by (-1) on resulting determinant
+							break;
+
+						}
 					}
 				}
 			}
+			checkCount++;
 		}
 
 		// Diagonal scan
@@ -444,7 +459,6 @@ public class Matrix {
 	// Regression method
 	public static Matrix regresi(Matrix m) {
         // asumsi matriks sudah augmented
-		m.printMatrix();
         Matrix temp ;
         Matrix regres ;
         int n , i , j = 0, l = 0;
@@ -479,12 +493,7 @@ public class Matrix {
             }
             l++;
         }
-//        regres.printMatrix();
-//        regres.completeGaussJordanElimination() ; // DEBUG
-		// for (int a = 0 ; a < regres.getRow() ; a++)
-		// 	for (int b = 0 ; b < regres.getColumn() ; b++)
-		// 		regres.matrix[a][b] = (regres.matrix[a][b] < 0.0001) ? 0 : regres.matrix[a][b];
-
+        regres.completeGaussJordanElimination() ;
         return regres ;
     }
 
