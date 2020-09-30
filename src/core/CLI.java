@@ -126,6 +126,67 @@ public class CLI {
 				System.out.println("Masukan tidak diketahui");
 		}
 	}
+	
+	private static Matrix regressionMatrixInput() {
+		// Input type Interface
+		String tempString = "", stringMemory = "";
+		System.out.println("\nInput data tabel");
+		System.out.println("1. File");
+		System.out.println("2. Keyboard");
+		while (true) {
+			tempString = CLI.stringInput();
+			// File Input
+			if (tempString.equals("1")) {
+				System.out.println("Masukan nama file (termasuk ekstensi)");
+				tempString = CLI.stringInput();
+				if (!ioFile.readFile(tempString)) {
+					stringMemory = ioFile.stringRead();
+					ioFile.closeFile();
+					return Matrix.stringToMatrix(stringMemory);
+				}
+				else
+					System.out.println("File tidak ditemukan");
+			}
+
+			// String Input
+			else if (tempString.equals("2")) {
+				// Size Row
+//				int rowSize = 0; // TODO : Clean
+//				while (true) {
+//					System.out.print("Derajat polinom : ");
+//					tempString = userInput.nextLine();
+//					try {
+//						rowSize = Integer.parseInt(tempString);
+//						break;
+//					}
+//					catch (NumberFormatException nfe) {
+//						System.out.println("Masukan tidak diketahui");
+//					}
+//				}
+				System.out.println("Masukkan \"akhir\" untuk mengakhiri input");
+				// User matrix element input
+				tempString = ""; // Flush current tempString
+				String tempConcat = "";
+				for (int i = 0 ; !tempConcat.equals("akhir") ; i++) {
+					System.out.print(String.format("Baris data ke-%d : ",(i+1)));
+					tempConcat = userInput.nextLine().trim();
+					tempString = tempString + (tempConcat + "\n");
+				}
+				System.out.print("Nilai xk yang akan ditaksir : ");
+				tempConcat = userInput.nextLine().trim();
+				tempString = tempString + (tempConcat + "\n");
+
+				return Matrix.stringToMatrix(tempString);
+			}
+
+			// Invalid Input
+			else
+				System.out.println("Masukan tidak diketahui");
+		}
+	}
+	
+	
+	
 	private static void dataWrite(String stream) {
 		System.out.println("Simpan hasil dalam file? (y/n)");
 		String tempString = CLI.stringInput();
