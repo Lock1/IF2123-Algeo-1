@@ -1,0 +1,8 @@
+Sampel titik
+0.5 0.44543086
+1 0.53788284274
+1.5 0.5808969
+2 0.576651529752
+Hasil polinom interpolasi
+f(x) = 0.00x^3 - 0.11x^2 + 0.34x^1 + 0.30x^0 
+Hasil estimasi f(0.250) = 0.380
