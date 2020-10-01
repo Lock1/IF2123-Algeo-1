@@ -102,13 +102,13 @@ Input matriks
 1. File
 2. Keyboard
 >> Masukan nama file (termasuk ekstensi)
->> Determinan dari matriks adalah nol
-Matriks masukkan
+>> Matriks masukkan
 1 1 -1 -1 1
 2 5 -7 -5 -2
 2 -1 1 3 4
 5 2 -4 2 6
 
+Determinan dari matriks adalah nol
 Simpan hasil dalam file? (y/n)
 >> Nama file : 
 MENU
@@ -129,13 +129,13 @@ Input matriks
 1. File
 2. Keyboard
 >> Masukan nama file (termasuk ekstensi)
->> Determinan dari matriks adalah nol
-Matriks masukkan
+>> Matriks masukkan
 1 1 -1 -1 1
 2 5 -7 -5 -2
 2 -1 1 3 4
 5 2 -4 2 6
 
+Determinan dari matriks adalah nol
 Simpan hasil dalam file? (y/n)
 >> Nama file : 
 MENU
@@ -500,13 +500,13 @@ Input matriks
 >> Masukan nama file (termasuk ekstensi)
 >> File tidak ditemukan
 >> Masukan nama file (termasuk ekstensi)
->> Determinan dari matriks adalah nol
-Matriks masukkan
+>> Matriks masukkan
 1 -1 2 -1 -1
 2 1 -2 -2 -2
 -1 2 -4 1 1
 3 0 0 -3 -3
 
+Determinan dari matriks adalah nol
 Simpan hasil dalam file? (y/n)
 >> Nama file : 
 MENU
@@ -573,13 +573,13 @@ Input matriks
 1. File
 2. Keyboard
 >> Masukan nama file (termasuk ekstensi)
->> Determinan dari matriks adalah nol
-Matriks masukkan
+>> Matriks masukkan
 1 -1 2 -1 -1
 2 1 -2 -2 -2
 -1 2 -4 1 1
 3 0 0 -3 -3
 
+Determinan dari matriks adalah nol
 Simpan hasil dalam file? (y/n)
 >> Nama file : 
 MENU
@@ -600,13 +600,13 @@ Input matriks
 1. File
 2. Keyboard
 >> Masukan nama file (termasuk ekstensi)
->> Determinan dari matriks adalah nol
-Matriks masukkan
+>> Matriks masukkan
 1 -1 2 -1 -1
 2 1 -2 -2 -2
 -1 2 -4 1 1
 3 0 0 -3 -3
 
+Determinan dari matriks adalah nol
 Simpan hasil dalam file? (y/n)
 >> Nama file : 
 MENU

@@ -301,7 +301,7 @@ public class CLI {
 				writeString = String.format("%sx%d = %.2f\n", writeString, (i+1), tempVD[i]);
 		}
 		else if (isZeroDet)
-			System.out.println("Determinan dari matriks adalah nol");
+			writeString = writeString + "Determinan dari matriks adalah nol\n";
 		System.out.print(writeString);
 		dataWrite(writeString);
 	}
