@@ -214,6 +214,11 @@ public class Matrix {
 						this.sumRow(i, a, ((-1) * (matrix[a][j])));
 					break;
 				}
+		// Extreme number rounding, disable this block if not using rounding
+		for (int i = 0 ; i < row ; i++)
+			for (int j = 0 ; j < column ; j++)
+				if ((matrix[i][j] > 1E10) || (matrix[i][j] < -1E10) || ((matrix[i][j] < 1E-10) && (matrix[i][j] > -1E-10)))
+					matrix[i][j] = 0;
 	}
 
 	public String eliminationRREFMatrix() {
@@ -390,9 +395,22 @@ public class Matrix {
 				coefficientMatrix.matrix[i][j] = Math.pow(pointMatrix.matrix[i][0], j);
 		for (int i = 0; i < polyDegree + 1; i++)
 			coefficientMatrix.matrix[i][polyDegree + 1] = pointMatrix.matrix[i][1];
-		coefficientMatrix.completeGaussJordanElimination();
-		for (int i = 0; i < coefficientMatrix.getRow(); i++)
-			coefficientVector[i] = coefficientMatrix.matrix[i][polyDegree + 1];
+//		coefficientVector = coefficientMatrix.cramerMethod();
+//		coefficientMatrix.completeGaussJordanElimination();
+
+		Matrix squareTempMatrix = new Matrix(coefficientMatrix.getRow(),coefficientMatrix.getColumn()-1);
+		for (int i = 0 ; i < coefficientMatrix.getRow() ; i++)
+			for (int j = 0 ; j < coefficientMatrix.getColumn() - 1 ; j++)
+				squareTempMatrix.matrix[i][j] = coefficientMatrix.matrix[i][j];
+		squareTempMatrix = Matrix.inverseMatrix(squareTempMatrix);
+		for (int i = 0 ; i < squareTempMatrix.getRow() ; i++) {
+			double multiplicationResult = 0;
+			for (int j = 0 ; j < squareTempMatrix.getColumn() ; j++)
+				multiplicationResult += squareTempMatrix.matrix[i][j] * coefficientMatrix.matrix[j][coefficientMatrix.getColumn()-1];
+			coefficientVector[i] = multiplicationResult;
+		}
+//		for (int i = 0; i < coefficientMatrix.getRow(); i++)
+//			coefficientVector[i] = coefficientMatrix.matrix[i][polyDegree + 1];
 		return coefficientVector;
 	}
 
