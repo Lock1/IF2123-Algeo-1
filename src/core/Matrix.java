@@ -157,31 +157,23 @@ public class Matrix {
 
 	// System of Linear Equation Method
 	public void gaussianElimination() {
-		for (int i = 0 ; i < row ; i++) {
-			for (int j = 0 ; j < column - 1 ; j++) { // Assuming input are augmented matrix
+		for (int i = 0 ; i < row ; i++)
+			for (int j = 0 ; j < column - 1 ; j++) // Assuming input are augmented matrix
 				if (matrix[i][j] != 0.0) {
 					for (int a = i + 1 ; a < row ; a++)
 						this.sumRow(i,a,((-1) * (matrix[a][j] / matrix[i][j])));
 					break;
 				}
-			}
-		}
-		System.out.println("pre jordan");
-		this.printMatrix();
 	}
 
 	public void gaussJordanElimination() {
 		this.gaussianElimination();
-		System.out.println("pre normal");
-		this.printMatrix();
-		for (int i = 0 ; i < row ; i++) {
-			for (int j = 0 ; j < column - 1 ; j++) {
+		for (int i = 0 ; i < row ; i++)
+			for (int j = 0 ; j < column - 1 ; j++)
 				if (matrix[i][j] != 0.0) {
 					this.multiplyRow(i,1/(matrix[i][j]));
 					break;
 				}
-			}
-		}
 	}
 
 	public double[] cramerMethod() {
@@ -204,55 +196,34 @@ public class Matrix {
 		}
 		return vectorResult;
 	}
-	
-	public void completeGaussElimination() {
-		this.gaussianElimination();
-		for (int i = row-1 ; i >= 0 ; i--) {
-			for (int j = 0 ; j < column - 1 ; j++) {
-				if (matrix[i][j] != 0.0) {
-					for (int a = i - 1 ; a >= 0 ; a--)
-						this.sumRow(i,a,((-1) * (matrix[a][j] / matrix[i][j])));
-					break;
-				}
-			}
-		}
-	}
 
 
 	// Complete elimination
 	public void completeGaussJordanElimination() {
 		// Make sure this matrix already reduced row echelon form
 		this.gaussJordanElimination();
-		System.out.println("pre upper");
-		this.printMatrix();
 		// Gauss-Jordan Elimination for upper diagonal
-		for (int i = row-1 ; i >= 0 ; i--) {
-			for (int j = 0 ; j < column - 1 ; j++) {
+		for (int i = row-1 ; i >= 0 ; i--)
+			for (int j = 0 ; j < column - 1 ; j++)
 				if (matrix[i][j] == 1.0) {
 					for (int a = i - 1 ; a >= 0 ; a--)
 						this.sumRow(i,a,((-1) * (matrix[a][j])));
 					break;
 				}
-			}
-		}
 	}
 
 
 	public String eliminationRREFMatrix() {
-//		this.completeGaussElimination(); // FIXME : !!!!! sometimes rgtc give 0 0 0 0.154
 		this.completeGaussJordanElimination();
 		// Sorting matrix
 		int minBox = (row > column) ? column - 1 : row;
-		for (int i = 0 ; i < minBox ; i++) {
-			if (matrix[i][i] == 0) {
-				for (int a = 0 ; a < minBox ; a++) {
+		for (int i = 0 ; i < minBox ; i++)
+			if (matrix[i][i] == 0)
+				for (int a = 0 ; a < row ; a++)
 					if (matrix[a][i] != 0.0) {
 						this.swapRow(a, i);
 						break;
 					}
-				}
-			}
-		}
 		String writeString = "";
 		// Printing elimination result
 		writeString = "Hasil operasi eliminasi\n" + Matrix.matrixToString(this) + "\n";
@@ -279,14 +250,12 @@ public class Matrix {
 		for (int i = 0 ; i < column - 1 ; i++)
 			freeVariable[i] = true;
 
-		for (int i = 0 ; i < row ; i++) {
-			for (int j = 0 ; j < (column - 1) ; j++) {
+		for (int i = 0 ; i < row ; i++)
+			for (int j = 0 ; j < (column - 1) ; j++)
 				if (matrix[i][j] != 0.0) {
 					freeVariable[j] = false;
 					break;
 				}
-			}
-		}
 
 		// Solution maker
 		for (int j = 0 ; j < (column - 1) ; j++) {
@@ -294,7 +263,7 @@ public class Matrix {
 				writeString = String.format("%sx%d = %s\n",writeString,(j+1), Character.toString((char) (j+97))); // 97 is ASCII for 'a', use 65 for capital 'A'
 			else {
 				String solutionBuilder = " ";
-				for (int i = 0 ; i < row ; i++) {
+				for (int i = 0 ; i < row ; i++)
 					if (matrix[i][j] != 0) {
 						for (int col = 0 ; col < (column - 1) ; col++)
 							if ((matrix[i][col] != 0) && (col != j))
@@ -302,7 +271,6 @@ public class Matrix {
 						writeString = String.format("%sx%d = %s%s\n",writeString,(j+1),Matrix.doubleToStringFilter(matrix[i][column-1]),solutionBuilder);
 						break;
 					}
-				}
 			}
 		}
 		return writeString;
@@ -313,9 +281,8 @@ public class Matrix {
 	// Determinant method
 	public double cofactorDet() {
 		// NaN flag if not square matrix
-		if (row != column) {
+		if (row != column)
 			return Double.NaN;
-		}
 
 		// Base case, 2x2 Matrix Determinant
 		if ((row == 2) && (column == 2))

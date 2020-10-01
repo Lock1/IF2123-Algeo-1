@@ -268,10 +268,12 @@ public class CLI {
 		// Menu evaluation
 		if (tempString.equals("1") || tempString.equals("2")) {
 			if (tempString.equals("1")) {
-				tempMatrix.gaussianElimination();
+				tempMatrix.gaussianElimination(); // For some reason, probably due rounding error,
+				tempMatrix.gaussianElimination(); // Need 2x call to get proper row echelon form
 				writeString = writeString + "Hasil operasi elimininasi Gauss\n" + Matrix.matrixToString(tempMatrix) + "\n";
 			}
 			else {
+				tempMatrix.gaussJordanElimination();
 				tempMatrix.gaussJordanElimination();
 				writeString = writeString + "Hasil operasi elimininasi Gauss-Jordan\n" + Matrix.matrixToString(tempMatrix) + "\n";
 			}

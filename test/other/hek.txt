@@ -1,0 +1,7 @@
+Sampel titik
+3 4.5
+2 2
+1 0.5
+Hasil polinom interpolasi
+f(x) = 0.50x^2 
+Hasil estimasi f(1.500) = 1.125
