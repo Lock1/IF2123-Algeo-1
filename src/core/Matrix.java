@@ -20,12 +20,21 @@ public class Matrix {
 	}
 
 	// Selector Method
-	public int getRow() { return row; }
-	public void setRow(int row) { this.row = row; }
-	public int getColumn() { return column; }
-	public void setColumn(int column) { this.column = column; }
+	public int getRow() {
+		return row;
+	}
 
+	public void setRow(int row) {
+		this.row = row;
+	}
 
+	public int getColumn() {
+		return column;
+	}
+
+	public void setColumn(int column) {
+		this.column = column;
+	}
 
 	// Conversion method
 	public static Matrix stringToMatrix(String stream) {
@@ -53,7 +62,7 @@ public class Matrix {
 		try {
 			String temporaryNumber = "";
 			int currentIndex = 0;
-			for (int i = 0 ; i < stream.length() ; i++) {
+			for (int i = 0; i < stream.length(); i++) {
 				if (Character.toString(stream.charAt(i)).matches("[0-9]|-|\\.")) {
 					readingN = true;
 					if (readingN)
@@ -86,8 +95,6 @@ public class Matrix {
 		return tempMString;
 	}
 
-
-
 	// Other method
 	public void printMatrix() {
 		for (int i = 0; i < row; i++) {
@@ -102,26 +109,26 @@ public class Matrix {
 	private static String doubleToStringFilter(double entry) {
 		String doubleString = Double.toString(entry);
 		if (doubleString.endsWith(".0"))
-			doubleString = doubleString.replace(".0","");
+			doubleString = doubleString.replace(".0", "");
 		if (doubleString.equals("-0"))
-			doubleString = doubleString.replace("-0","0");
+			doubleString = doubleString.replace("-0", "0");
 		return doubleString;
 	}
 
 	private static String doubleToSolutionString(double entry) {
 		String doubleStringConvert = Double.toString(entry);
 		if (doubleStringConvert.startsWith("-"))
-			doubleStringConvert = doubleStringConvert.replace("-","- ");
+			doubleStringConvert = doubleStringConvert.replace("-", "- ");
 		else
 			doubleStringConvert = "+ " + doubleStringConvert;
 		if (doubleStringConvert.endsWith(".0"))
-			doubleStringConvert = doubleStringConvert.replace(".0","");
+			doubleStringConvert = doubleStringConvert.replace(".0", "");
 		return doubleStringConvert;
 	}
 
 	public boolean isDiagonalNonZero() {
 
-		for (int i = 0 ; i < row ; i++) {
+		for (int i = 0; i < row; i++) {
 			if (matrix[i][i] == 0.0)
 				return false;
 		}
@@ -131,7 +138,7 @@ public class Matrix {
 	// Row & Column operation
 	public void swapRow(int r1, int r2) {
 		double tempDB = 0;
-		for (int j = 0 ; j < column ; j++) {
+		for (int j = 0; j < column; j++) {
 			tempDB = matrix[r1][j];
 			matrix[r1][j] = matrix[r2][j];
 			matrix[r2][j] = tempDB;
@@ -139,87 +146,83 @@ public class Matrix {
 	}
 
 	public void multiplyRow(int rDst, double m) {
-		for (int j = 0 ; j < column ; j++)
+		for (int j = 0; j < column; j++)
 			matrix[rDst][j] *= m;
 	}
 
 	public void sumRow(int rSrc, int rDst, double m) {
-		for (int j = 0 ; j < column ; j++)
+		for (int j = 0; j < column; j++)
 			matrix[rDst][j] += (matrix[rSrc][j] * m);
 	}
 
 	public void replaceColumn(int cDst, double rColumn[]) {
-		for (int i = 0 ; i < row ; i++)
+		for (int i = 0; i < row; i++)
 			matrix[i][cDst] = rColumn[i];
 	}
 
-
-
 	// System of Linear Equation Method
 	public void gaussianElimination() {
-		for (int i = 0 ; i < row ; i++)
-			for (int j = 0 ; j < column - 1 ; j++) // Assuming input are augmented matrix
+		for (int i = 0; i < row; i++)
+			for (int j = 0; j < column - 1; j++) // Assuming input are augmented matrix
 				if (matrix[i][j] != 0.0) {
-					for (int a = i + 1 ; a < row ; a++)
-						this.sumRow(i,a,((-1) * (matrix[a][j] / matrix[i][j])));
+					for (int a = i + 1; a < row; a++)
+						this.sumRow(i, a, ((-1) * (matrix[a][j] / matrix[i][j])));
 					break;
 				}
 	}
 
 	public void gaussJordanElimination() {
 		this.gaussianElimination();
-		for (int i = 0 ; i < row ; i++)
-			for (int j = 0 ; j < column - 1 ; j++)
+		for (int i = 0; i < row; i++)
+			for (int j = 0; j < column - 1; j++)
 				if (matrix[i][j] != 0.0) {
-					this.multiplyRow(i,1/(matrix[i][j]));
+					this.multiplyRow(i, 1 / (matrix[i][j]));
 					break;
 				}
 	}
 
 	public double[] cramerMethod() {
 		// Copying matrix to tempCramer and splitting to new vector
-		Matrix tempCramer = new Matrix(row,column - 1);
+		Matrix tempCramer = new Matrix(row, column - 1);
 		double originalDet = 0;
 		double vectorResult[] = new double[row];
 		double vectorAug[] = new double[row];
-		for (int i = 0 ; i < row ; i++) {
-			vectorAug[i] = this.matrix[i][column-1];
-			for (int j = 0 ; j < (column - 1) ; j++)
+		for (int i = 0; i < row; i++) {
+			vectorAug[i] = this.matrix[i][column - 1];
+			for (int j = 0; j < (column - 1); j++)
 				tempCramer.matrix[i][j] = this.matrix[i][j];
 		}
 		originalDet = tempCramer.cofactorDet(); // Using cofactor because RR got bug currently xd
-		for (int i = 0 ; i < row ; i++) {
-			tempCramer.replaceColumn(i,vectorAug);
+		for (int i = 0; i < row; i++) {
+			tempCramer.replaceColumn(i, vectorAug);
 			vectorResult[i] = (tempCramer.cofactorDet() / originalDet);
-			for (int a = 0 ; a < row ; a++)
+			for (int a = 0; a < row; a++)
 				tempCramer.matrix[a][i] = this.matrix[a][i];
 		}
 		return vectorResult;
 	}
-
 
 	// Complete elimination
 	public void completeGaussJordanElimination() {
 		// Make sure this matrix already reduced row echelon form
 		this.gaussJordanElimination();
 		// Gauss-Jordan Elimination for upper diagonal
-		for (int i = row-1 ; i >= 0 ; i--)
-			for (int j = 0 ; j < column - 1 ; j++)
+		for (int i = row - 1; i >= 0; i--)
+			for (int j = 0; j < column - 1; j++)
 				if (matrix[i][j] == 1.0) {
-					for (int a = i - 1 ; a >= 0 ; a--)
-						this.sumRow(i,a,((-1) * (matrix[a][j])));
+					for (int a = i - 1; a >= 0; a--)
+						this.sumRow(i, a, ((-1) * (matrix[a][j])));
 					break;
 				}
 	}
-
 
 	public String eliminationRREFMatrix() {
 		this.completeGaussJordanElimination();
 		// Sorting matrix
 		int minBox = (row > column) ? column - 1 : row;
-		for (int i = 0 ; i < minBox ; i++)
+		for (int i = 0; i < minBox; i++)
 			if (matrix[i][i] == 0)
-				for (int a = 0 ; a < row ; a++)
+				for (int a = 0; a < row; a++)
 					if (matrix[a][i] != 0.0) {
 						this.swapRow(a, i);
 						break;
@@ -227,24 +230,22 @@ public class Matrix {
 		String writeString = "";
 		this.printMatrix();
 		// Rounding, disable this block if not using rounding
-		for (int i = 0 ; i < row ; i++)
-			for (int j = 0 ; j < column ; j++)
-				if ((matrix[i][j] > 1E10) || (matrix[i][j] < -1E10) || ((matrix[i][j] < 1E-10) && (matrix[i][j] > -1E-10)))
+		for (int i = 0; i < row; i++)
+			for (int j = 0; j < column; j++)
+				if ((matrix[i][j] > 1E10) || (matrix[i][j] < -1E10)
+						|| ((matrix[i][j] < 1E-10) && (matrix[i][j] > -1E-10)))
 					matrix[i][j] = 0;
 		// Printing elimination result
 		writeString = "Hasil operasi eliminasi\n" + Matrix.matrixToString(this) + "\n";
 
-
-
-
 		// Scan for inconsistent equation
 		int zeroRowCount = 0;
-		for (int i = 0 ; i < row ; i++) {
+		for (int i = 0; i < row; i++) {
 			boolean isRowNonZero = false;
-			for (int j = 0 ; j < column - 1 ; j++)
+			for (int j = 0; j < column - 1; j++)
 				if (matrix[i][j] != 0.0)
 					isRowNonZero = true;
-			if ((matrix[i][column-1] != 0.0) && (!isRowNonZero))
+			if ((matrix[i][column - 1] != 0.0) && (!isRowNonZero))
 				return (writeString + "Sistem persamaan tidak konsisten\n");
 			else if (!isRowNonZero)
 				zeroRowCount++;
@@ -255,37 +256,47 @@ public class Matrix {
 			return "Matriks adalah matriks nol\n";
 
 		// Checking relation with other variable
-		boolean freeVariable[] = new boolean[column-1];
-		for (int i = 0 ; i < column - 1 ; i++)
+		boolean freeVariable[] = new boolean[column - 1];
+		for (int i = 0; i < column - 1; i++)
 			freeVariable[i] = true;
 
-		for (int i = 0 ; i < row ; i++)
-			for (int j = 0 ; j < (column - 1) ; j++)
+		for (int i = 0; i < row; i++)
+			for (int j = 0; j < (column - 1); j++)
 				if (matrix[i][j] != 0.0) {
 					freeVariable[j] = false;
 					break;
 				}
 
 		// Solution maker
-		for (int j = 0 ; j < (column - 1) ; j++) {
+		for (int j = 0; j < (column - 1); j++) {
 			if (freeVariable[j])
-				writeString = String.format("%sx%d = %s\n",writeString,(j+1), Character.toString((char) (j+97))); // 97 is ASCII for 'a', use 65 for capital 'A'
+				writeString = String.format("%sx%d = %s\n", writeString, (j + 1), Character.toString((char) (j + 97))); // 97
+																														// is
+																														// ASCII
+																														// for
+																														// 'a',
+																														// use
+																														// 65
+																														// for
+																														// capital
+																														// 'A'
 			else {
 				String solutionBuilder = " ";
-				for (int i = 0 ; i < row ; i++)
+				for (int i = 0; i < row; i++)
 					if (matrix[i][j] != 0) {
-						for (int col = 0 ; col < (column - 1) ; col++)
+						for (int col = 0; col < (column - 1); col++)
 							if ((matrix[i][col] != 0) && (col != j))
-								solutionBuilder = String.format("%s%s%s ", solutionBuilder, Matrix.doubleToSolutionString(-matrix[i][col]), Character.toString((char) (col+97)));
-						writeString = String.format("%sx%d = %s%s\n",writeString,(j+1),Matrix.doubleToStringFilter(matrix[i][column-1]),solutionBuilder);
+								solutionBuilder = String.format("%s%s%s ", solutionBuilder,
+										Matrix.doubleToSolutionString(-matrix[i][col]),
+										Character.toString((char) (col + 97)));
+						writeString = String.format("%sx%d = %s%s\n", writeString, (j + 1),
+								Matrix.doubleToStringFilter(matrix[i][column - 1]), solutionBuilder);
 						break;
 					}
 			}
 		}
 		return writeString;
 	}
-
-
 
 	// Determinant method
 	public double cofactorDet() {
@@ -328,22 +339,23 @@ public class Matrix {
 
 		// Initalisation and copying matrix value
 		double det = 1, multiplier = 0;
-		Matrix temp = new Matrix(row,column);
-		for (int i = 0 ; i < row ; i++)
-			for (int j = 0 ; j < column ; j++)
+		Matrix temp = new Matrix(row, column);
+		for (int i = 0; i < row; i++)
+			for (int j = 0; j < column; j++)
 				temp.matrix[i][j] = this.matrix[i][j];
 
 		// Diagonal row swap, try make all diagonal non-zero
 		boolean negated = false;
 		int checkCount = 0, indexPrevSwap = -1;
 		while ((!temp.isDiagonalNonZero()) && (checkCount < 50)) { // Brute force but whatever
-			for (int i = 0 ; i < row ; i++) {
+			for (int i = 0; i < row; i++) {
 				if (temp.matrix[i][i] == 0.0) {
-					for (int a = 0 ; a < row ; a++) {
+					for (int a = 0; a < row; a++) {
 						if ((temp.matrix[a][i] != 0.0) && (a != indexPrevSwap)) {
-							temp.swapRow(a,i);
+							temp.swapRow(a, i);
 							indexPrevSwap = a;
-							negated = !negated;			// Single swap correspond multiplication by (-1) on resulting determinant
+							negated = !negated; // Single swap correspond multiplication by (-1) on resulting
+												// determinant
 							break;
 
 						}
@@ -354,21 +366,21 @@ public class Matrix {
 		}
 
 		// Diagonal scan
-		for (int i = 0 ; i < row ; i++)
+		for (int i = 0; i < row; i++)
 			if (temp.matrix[i][i] == 0.0)
 				return 0.0;
 
-		for (int i = 0 ; i < column ; i++) {
+		for (int i = 0; i < column; i++) {
 			// Multiplication Row Operation
-			multiplier = temp.matrix[i][i]; 	// Saving multiplier
-			det *= multiplier;					// Determinant will changed by multiplication factor x if multiplying with 1/x
+			multiplier = temp.matrix[i][i]; // Saving multiplier
+			det *= multiplier; // Determinant will changed by multiplication factor x if multiplying with 1/x
 			if (multiplier != 0.0)
-				temp.multiplyRow(i,1/multiplier);
+				temp.multiplyRow(i, 1 / multiplier);
 			// Row Addition Operation
 			// No change in determinant value
-			for (int j = i + 1 ; j < row ; j++) {
+			for (int j = i + 1; j < row; j++) {
 				multiplier = temp.matrix[j][i];
-				temp.sumRow(i,j,-multiplier);
+				temp.sumRow(i, j, -multiplier);
 			}
 		}
 		if (negated)
@@ -381,19 +393,18 @@ public class Matrix {
 		// Point Matrix is Nx2 matrix, holding point on every row
 		double coefficientVector[] = new double[pointMatrix.getRow()];
 		int polyDegree = pointMatrix.getRow() - 1;
-		Matrix coefficientMatrix = new Matrix(polyDegree + 1,polyDegree + 2);
+		Matrix coefficientMatrix = new Matrix(polyDegree + 1, polyDegree + 2);
 		// Copying information on point matrix and calculating coefficient
-		for (int i = 0 ; i < polyDegree + 1; i++)
-			for (int j = 0 ; j < polyDegree + 1 ; j++)
+		for (int i = 0; i < polyDegree + 1; i++)
+			for (int j = 0; j < polyDegree + 1; j++)
 				coefficientMatrix.matrix[i][j] = Math.pow(pointMatrix.matrix[i][0], j);
-		for (int i = 0 ; i < polyDegree + 1 ; i++)
+		for (int i = 0; i < polyDegree + 1; i++)
 			coefficientMatrix.matrix[i][polyDegree + 1] = pointMatrix.matrix[i][1];
 		coefficientMatrix.completeGaussJordanElimination();
-		for (int i = 0 ; i < coefficientMatrix.getRow() ; i++)
+		for (int i = 0; i < coefficientMatrix.getRow(); i++)
 			coefficientVector[i] = coefficientMatrix.matrix[i][polyDegree + 1];
 		return coefficientVector;
 	}
-
 
 	// Inverse method
 	public static Matrix inverseMatrix(Matrix M) {
@@ -439,7 +450,7 @@ public class Matrix {
 	public static Matrix minorMatrix(Matrix M, int k, int l) { // menghasilkan matriks minor dari entri i dan j
 		Matrix Minor = new Matrix(M.getRow() - 1, M.getColumn() - 1);
 		int i = 0, j = 0, m = 0, n = 0;
-		while (i < M.getRow())  {
+		while (i < M.getRow()) {
 			if (i == k) {
 				i++;
 				continue;
@@ -455,8 +466,8 @@ public class Matrix {
 				j++;
 				n++;
 			}
-		i++;
-		m++;
+			i++;
+			m++;
 		}
 		return Minor;
 	}
