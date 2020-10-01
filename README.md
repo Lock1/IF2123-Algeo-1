@@ -51,14 +51,20 @@ Komponen      | Menggunakan
 JDK           | 14.01
 Eclipse IDE   | 2020-06 (4.16)
 WindowBuilder | 1.9.4
-*Note* : Eclipse dan Plugin WindowBuilder hanya digunakan untuk GUI
+
+
+
+*Note : Eclipse dan Plugin WindowBuilder hanya digunakan untuk GUI*
 
 
 **Dependencies**
 Komponen    | Menggunakan
 --------    | -----------
 JRE         | 9
-*Note* : Target platform digunakan JRE 9 dikarenakan pada WSL tidak ada JDK 11+
+
+
+
+*Note : Target platform digunakan JRE 9 dikarenakan pada WSL tidak ada JDK 11+*
 
 ## Spesifikasi
 **Status : Done** :white_check_mark: \
