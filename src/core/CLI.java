@@ -158,10 +158,12 @@ public class CLI {
 				for (int i = 0 ; !tempConcat.equals("akhir") ; i++) {
 					System.out.print(String.format("Baris data ke-%d : ",(i+1)));
 					tempConcat = userInput.nextLine().trim();
-					tempString = tempString + (tempConcat + "\n");
+					if (!tempConcat.equals("akhir"))
+						tempString = tempString + (tempConcat + "\n");
 				}
 				System.out.print("Nilai xk yang akan ditaksir : ");
 				tempConcat = userInput.nextLine().trim();
+				tempConcat = "1 " + tempConcat;
 				tempString = tempString + (tempConcat + "\n");
 
 				return Matrix.stringToMatrix(tempString);
@@ -367,10 +369,9 @@ public class CLI {
 		Matrix tempMatrix = CLI.regressionMatrixInput();
 		writeString = "Matriks masukkan\n" + Matrix.matrixToString(tempMatrix);
 		tempMatrix = Matrix.regresi(tempMatrix);
-		double tempVector[] = tempMatrix.cramerMethod();
 		writeString = writeString + "Hasil Regresi\n";
-		for (int i = 0 ; i < tempVector.length ; i++)
-			writeString = writeString + Double.toString(tempVector[i]) + "\n";
+		for (int i = 0 ; i < tempMatrix.getRow() ; i++)
+			writeString = writeString + Double.toString(tempMatrix.matrix[i][0]) + "\n";
 		System.out.println(writeString);
 		CLI.dataWrite(writeString);
 	}

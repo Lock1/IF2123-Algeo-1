@@ -229,16 +229,18 @@ public class Matrix {
 					}
 		String writeString = "";
 		this.printMatrix();
-		// Rounding, disable this block if not using rounding
-		for (int i = 0; i < row; i++)
-			for (int j = 0; j < column; j++)
-				if ((matrix[i][j] > 1E10) || (matrix[i][j] < -1E10)
-						|| ((matrix[i][j] < 1E-10) && (matrix[i][j] > -1E-10)))
+
+		// Extreme number rounding, disable this block if not using rounding
+		for (int i = 0 ; i < row ; i++)
+			for (int j = 0 ; j < column ; j++)
+				if ((matrix[i][j] > 1E10) || (matrix[i][j] < -1E10) || ((matrix[i][j] < 1E-10) && (matrix[i][j] > -1E-10)))
 					matrix[i][j] = 0;
+
 		// Printing elimination result
 		writeString = "Hasil operasi eliminasi\n" + Matrix.matrixToString(this) + "\n";
 
-		// Scan for inconsistent equation
+
+		// Scanz for inconsistent equation
 		int zeroRowCount = 0;
 		for (int i = 0; i < row; i++) {
 			boolean isRowNonZero = false;
@@ -269,17 +271,8 @@ public class Matrix {
 
 		// Solution maker
 		for (int j = 0; j < (column - 1); j++) {
-			if (freeVariable[j])
-				writeString = String.format("%sx%d = %s\n", writeString, (j + 1), Character.toString((char) (j + 97))); // 97
-																														// is
-																														// ASCII
-																														// for
-																														// 'a',
-																														// use
-																														// 65
-																														// for
-																														// capital
-																														// 'A'
+			if (freeVariable[j]) // 97 is ASCII for 'a'
+				writeString = String.format("%sx%d = %s\n", writeString, (j + 1), Character.toString((char) (j + 97)));
 			else {
 				String solutionBuilder = " ";
 				for (int i = 0; i < row; i++)
@@ -348,9 +341,9 @@ public class Matrix {
 		boolean negated = false;
 		int checkCount = 0, indexPrevSwap = -1;
 		while ((!temp.isDiagonalNonZero()) && (checkCount < 50)) { // Brute force but whatever
-			for (int i = 0; i < row; i++) {
-				if (temp.matrix[i][i] == 0.0) {
-					for (int a = 0; a < row; a++) {
+			for (int i = 0 ; i < row ; i++)
+				if (temp.matrix[i][i] == 0.0)
+					for (int a = 0 ; a < row ; a++)
 						if ((temp.matrix[a][i] != 0.0) && (a != indexPrevSwap)) {
 							temp.swapRow(a, i);
 							indexPrevSwap = a;
@@ -359,9 +352,6 @@ public class Matrix {
 							break;
 
 						}
-					}
-				}
-			}
 			checkCount++;
 		}
 
