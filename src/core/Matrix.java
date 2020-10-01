@@ -166,10 +166,14 @@ public class Matrix {
 				}
 			}
 		}
+		System.out.println("pre jordan");
+		this.printMatrix();
 	}
 
 	public void gaussJordanElimination() {
 		this.gaussianElimination();
+		System.out.println("pre normal");
+		this.printMatrix();
 		for (int i = 0 ; i < row ; i++) {
 			for (int j = 0 ; j < column - 1 ; j++) {
 				if (matrix[i][j] != 0.0) {
@@ -200,15 +204,9 @@ public class Matrix {
 		}
 		return vectorResult;
 	}
-
-
-
-	// Complete elimination
-	public void completeGaussJordanElimination() {
-		// Make sure this matrix already reduced row echelon form
-		this.gaussJordanElimination();
-
-		// Gauss-Jordan Elimination for upper diagonal
+	
+	public void completeGaussElimination() {
+		this.gaussianElimination();
 		for (int i = row-1 ; i >= 0 ; i--) {
 			for (int j = 0 ; j < column - 1 ; j++) {
 				if (matrix[i][j] != 0.0) {
@@ -221,9 +219,40 @@ public class Matrix {
 	}
 
 
-	public String eliminationRREFMatrix() {
-		this.completeGaussJordanElimination();
+	// Complete elimination
+	public void completeGaussJordanElimination() {
+		// Make sure this matrix already reduced row echelon form
+		this.gaussJordanElimination();
+		System.out.println("pre upper");
 		this.printMatrix();
+		// Gauss-Jordan Elimination for upper diagonal
+		for (int i = row-1 ; i >= 0 ; i--) {
+			for (int j = 0 ; j < column - 1 ; j++) {
+				if (matrix[i][j] == 1.0) {
+					for (int a = i - 1 ; a >= 0 ; a--)
+						this.sumRow(i,a,((-1) * (matrix[a][j])));
+					break;
+				}
+			}
+		}
+	}
+
+
+	public String eliminationRREFMatrix() {
+//		this.completeGaussElimination(); // FIXME : !!!!! sometimes rgtc give 0 0 0 0.154
+		this.completeGaussJordanElimination();
+		// Sorting matrix
+		int minBox = (row > column) ? column - 1 : row;
+		for (int i = 0 ; i < minBox ; i++) {
+			if (matrix[i][i] == 0) {
+				for (int a = 0 ; a < minBox ; a++) {
+					if (matrix[a][i] != 0.0) {
+						this.swapRow(a, i);
+						break;
+					}
+				}
+			}
+		}
 		String writeString = "";
 		// Printing elimination result
 		writeString = "Hasil operasi eliminasi\n" + Matrix.matrixToString(this) + "\n";

@@ -126,7 +126,7 @@ public class CLI {
 				System.out.println("Masukan tidak diketahui");
 		}
 	}
-	
+
 	private static Matrix regressionMatrixInput() {
 		// Input type Interface
 		String tempString = "", stringMemory = "";
@@ -151,18 +151,6 @@ public class CLI {
 			// String Input
 			else if (tempString.equals("2")) {
 				// Size Row
-//				int rowSize = 0; // TODO : Clean
-//				while (true) {
-//					System.out.print("Derajat polinom : ");
-//					tempString = userInput.nextLine();
-//					try {
-//						rowSize = Integer.parseInt(tempString);
-//						break;
-//					}
-//					catch (NumberFormatException nfe) {
-//						System.out.println("Masukan tidak diketahui");
-//					}
-//				}
 				System.out.println("Masukkan \"akhir\" untuk mengakhiri input");
 				// User matrix element input
 				tempString = ""; // Flush current tempString
@@ -184,9 +172,9 @@ public class CLI {
 				System.out.println("Masukan tidak diketahui");
 		}
 	}
-	
-	
-	
+
+
+
 	private static void dataWrite(String stream) {
 		System.out.println("Simpan hasil dalam file? (y/n)");
 		String tempString = CLI.stringInput();
@@ -282,6 +270,10 @@ public class CLI {
 			if (tempString.equals("1")) {
 				tempMatrix.gaussianElimination();
 				writeString = writeString + "Hasil operasi elimininasi Gauss\n" + Matrix.matrixToString(tempMatrix) + "\n";
+			}
+			else {
+				tempMatrix.gaussJordanElimination();
+				writeString = writeString + "Hasil operasi elimininasi Gauss-Jordan\n" + Matrix.matrixToString(tempMatrix) + "\n";
 			}
 			writeString = writeString + tempMatrix.eliminationRREFMatrix();
 		}
