@@ -472,7 +472,6 @@ public class Matrix {
 		Matrix t = new Matrix(m.getColumn(), m.getRow());
 		int n, i, j = 0;
 		n = m.getRow();
-		x.printMatrix();
 		// mengisi matrix x kolom 1
 		for (i = 0; i < n; i++) {
 			x.matrix[i][0] = 1;
@@ -492,19 +491,9 @@ public class Matrix {
 		x.transposeMatrix();
 		copyMatrix(x, t);
 		x.transposeMatrix();
-		System.out.println("---- matrix y----");
-		y.printMatrix();
-		System.out.println("---- matrix x ----");
-		x.printMatrix();
-		System.out.println("---- matrix hasil kali transpose dengan x  ----");
 		temp = Matrix.kaliMatrix(t, x);
-		temp.printMatrix();
-		System.out.println("------ kemudian di invese------");
 		temp = inverseMatrix(temp);
-		temp.printMatrix();
-		System.out.println("---- setelah di inverse, proses perkalian transpose x dengan matrix y ----");
 		temp2 = Matrix.kaliMatrix(t, y);
-		System.out.println("------ setelah itu kalikan matrrix hasil inverse dengan hasip proses tadi ------- ");
 		temp = Matrix.kaliMatrix(temp, temp2);
 		return temp;
 	}

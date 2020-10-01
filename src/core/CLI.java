@@ -127,9 +127,10 @@ public class CLI {
 		}
 	}
 
-	private static Matrix regressionMatrixInput() {
+	private static Matrix[] regressionMatrixInput() {
 		// Input type Interface
-		String tempString = "", stringMemory = "";
+		String tempString = "", stringMemory = "", estimateValue = "";
+		Matrix matrixVectorTemp[] = new Matrix[2];
 		System.out.println("\nInput data tabel");
 		System.out.println("1. File");
 		System.out.println("2. Keyboard");
@@ -142,7 +143,7 @@ public class CLI {
 				if (!ioFile.readFile(tempString)) {
 					stringMemory = ioFile.stringRead();
 					ioFile.closeFile();
-					return Matrix.stringToMatrix(stringMemory);
+					matrixVectorTemp[0] = Matrix.stringToMatrix(stringMemory);
 				}
 				else
 					System.out.println("File tidak ditemukan");
@@ -161,17 +162,16 @@ public class CLI {
 					if (!tempConcat.equals("akhir"))
 						tempString = tempString + (tempConcat + "\n");
 				}
-				System.out.print("Nilai xk yang akan ditaksir : ");
-				tempConcat = userInput.nextLine().trim();
-				tempConcat = "1 " + tempConcat;
-				tempString = tempString + (tempConcat + "\n");
-
-				return Matrix.stringToMatrix(tempString);
+				matrixVectorTemp[0] = Matrix.stringToMatrix(tempString);
 			}
-
+			
 			// Invalid Input
 			else
 				System.out.println("Masukan tidak diketahui");
+			System.out.print("Nilai xk yang akan ditaksir : ");
+			estimateValue = userInput.nextLine().trim() + "\n";
+			matrixVectorTemp[1] = Matrix.stringToMatrix(estimateValue);
+			return matrixVectorTemp;
 		}
 	}
 
@@ -366,12 +366,30 @@ public class CLI {
 	private static void regressionMenu() {
 		String writeString = "";
 		System.out.println("-- Regresi linier berganda --");
-		Matrix tempMatrix = CLI.regressionMatrixInput();
+		Matrix tempMatrixVector[] = CLI.regressionMatrixInput();
+		Matrix tempMatrix = tempMatrixVector[0];
 		writeString = "Matriks masukkan\n" + Matrix.matrixToString(tempMatrix);
 		tempMatrix = Matrix.regresi(tempMatrix);
-		writeString = writeString + "Hasil Regresi\n";
-		for (int i = 0 ; i < tempMatrix.getRow() ; i++)
-			writeString = writeString + Double.toString(tempMatrix.matrix[i][0]) + "\n";
+		writeString = writeString + "Hasil Regresi\n" + "y = ";
+		for (int i = 0 ; i < tempMatrix.getRow() ; i++) {
+			if ((tempMatrix.matrix[i][0] > 0) && (i != 0))
+				writeString = String.format("%s+ %.3fx%d ",writeString,tempMatrix.matrix[i][0],i);
+			else if (tempMatrix.matrix[i][0] > 0)
+				writeString = String.format("%s%.3f ",writeString,tempMatrix.matrix[i][0]);
+			else if ((tempMatrix.matrix[i][0] < 0) && (i == 0))
+				writeString = String.format("%s- %.3f ",writeString,-tempMatrix.matrix[i][0]);
+			else if (tempMatrix.matrix[i][0] == 0.0)
+				writeString = String.format("%s",writeString);
+			else
+				writeString = String.format("%s- %.3fx%d ",writeString,-tempMatrix.matrix[i][0],i);
+		}
+		writeString = writeString + "\nEstimasi\n";
+		writeString = writeString + "y(xk) = ";
+		double regResult = tempMatrix.matrix[0][0];
+		for (int i = 0 ; i < tempMatrixVector[1].getColumn() ; i++)
+			regResult += tempMatrixVector[1].matrix[0][i]*tempMatrix.matrix[i+1][0];
+		
+		writeString = writeString + Double.toString(regResult);
 		System.out.println(writeString);
 		CLI.dataWrite(writeString);
 	}
