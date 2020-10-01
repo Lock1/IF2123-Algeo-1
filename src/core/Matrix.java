@@ -225,8 +225,17 @@ public class Matrix {
 						break;
 					}
 		String writeString = "";
+		this.printMatrix();
+		// Rounding, disable this block if not using rounding
+		for (int i = 0 ; i < row ; i++)
+			for (int j = 0 ; j < column ; j++)
+				if ((matrix[i][j] > 1E10) || (matrix[i][j] < -1E10) || ((matrix[i][j] < 1E-10) && (matrix[i][j] > -1E-10)))
+					matrix[i][j] = 0;
 		// Printing elimination result
 		writeString = "Hasil operasi eliminasi\n" + Matrix.matrixToString(this) + "\n";
+
+
+
 
 		// Scan for inconsistent equation
 		int zeroRowCount = 0;
@@ -454,43 +463,78 @@ public class Matrix {
 
 	// Regression method
 	public static Matrix regresi(Matrix m) {
-        // asumsi matriks sudah augmented
-        Matrix temp ;
-        Matrix regres ;
-        int n , i , j = 0, l = 0;
-        double kali = 0;
-        temp = m ;
-        regres = m ;
-        n = temp.getRow() ;
-        // mengisi sisanya
-        while ( l < n) {
-            for (i = 0 ; i <= n  ; i++) {
-                kali = 0 ;
-                j = 0 ;
-                while (j < n   ) {
-                    if (l == 0 && i == 0 ) {
-                        kali = n ;
-                    }
-                    else if ( l == 0 || i == 0 ) {
-                        kali += temp.matrix[j][i] ;
-                    }
-                    else {
+		// asumsi matriks sudah augmented
+		Matrix temp;
+		Matrix temp2;
+		Matrix x = new Matrix(m.getRow(), m.getColumn());
+		Matrix y = new Matrix(m.getRow(), 1);
+		Matrix t = new Matrix(m.getColumn(), m.getRow());
+		int n, i, j = 0;
+		n = m.getRow();
+		x.printMatrix();
+		// mengisi matrix x kolom 1
+		for (i = 0; i < n; i++) {
+			x.matrix[i][0] = 1;
 
-                        kali += temp.matrix[j][i]*temp.matrix[j][l] ;
-                    }
+		}
+		// mengisi matriks y
+		for (i = 0; i < n; i++) {
+			y.matrix[i][0] = m.matrix[i][m.getColumn() - 1];
 
-                    j++;
+		}
+		// mengisi matrix x sisanya
+		for (i = 0; i < n; i++) {
+			for (j = 1; j < m.getColumn(); j++) {
+				x.matrix[i][j] = m.matrix[i][j - 1];
+			}
+		}
+		x.transposeMatrix();
+		copyMatrix(x, t);
+		x.transposeMatrix();
+		System.out.println("---- matrix y----");
+		y.printMatrix();
+		System.out.println("---- matrix x ----");
+		x.printMatrix();
+		System.out.println("---- matrix hasil kali transpose dengan x  ----");
+		temp = Matrix.kaliMatrix(t, x);
+		temp.printMatrix();
+		System.out.println("------ kemudian di invese------");
+		temp = inverseMatrix(temp);
+		temp.printMatrix();
+		System.out.println("---- setelah di inverse, proses perkalian transpose x dengan matrix y ----");
+		temp2 = Matrix.kaliMatrix(t, y);
+		System.out.println("------ setelah itu kalikan matrrix hasil inverse dengan hasip proses tadi ------- ");
+		temp = Matrix.kaliMatrix(temp, temp2);
+		return temp;
+	}
 
-                }
-                regres.matrix[l][i] = kali ;
+	public static Matrix kaliMatrix(Matrix M1, Matrix M2) {
+		// asumsi jumlah kolom M1 dan jumlah baris M2 adalah sama
+		int i, j, k;
+		Matrix M3 = new Matrix(M1.getRow(), M2.getColumn());
+		M3.row = M1.getRow();
+		M3.column = M2.getColumn();
+		for (i = 0; i < M1.getRow(); i++) {
+			for (j = 0; j < M2.getColumn(); j++) {
+				for (k = 0; k < M2.getRow(); k++) {
+					M3.matrix[i][j] += M1.matrix[i][k] * M2.matrix[k][j];
+				}
+			}
+		}
+		return M3;
+	}
 
+	public static Matrix copyMatrix(Matrix M1, Matrix Mhasil) {
+		int i, j;
+		Mhasil.row = M1.getRow();
+		Mhasil.column = M1.getColumn();
+		for (i = 0; i < M1.getRow(); i++) {
+			for (j = 0; j < M1.getColumn(); j++) {
+				Mhasil.matrix[i][j] = M1.matrix[i][j];
+			}
+		}
+		return Mhasil;
 
-
-            }
-            l++;
-        }
-        regres.completeGaussJordanElimination() ;
-        return regres ;
-    }
+	}
 
 }

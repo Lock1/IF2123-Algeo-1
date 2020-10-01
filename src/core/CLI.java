@@ -364,7 +364,7 @@ public class CLI {
 	private static void regressionMenu() {
 		String writeString = "";
 		System.out.println("-- Regresi linier berganda --");
-		Matrix tempMatrix = CLI.matrixInput();
+		Matrix tempMatrix = CLI.regressionMatrixInput();
 		writeString = "Matriks masukkan\n" + Matrix.matrixToString(tempMatrix);
 		tempMatrix = Matrix.regresi(tempMatrix);
 		double tempVector[] = tempMatrix.cramerMethod();

@@ -1,0 +1,22 @@
+Matriks masukkan
+1 -1 2 -1 -1
+2 1 -2 -2 -2
+-1 2 -4 1 1
+3 0 0 -3 -3
+
+Hasil operasi elimininasi Gauss-Jordan
+1 -1 2 -1 -1
+0 1 -2 0 0
+0 0 0 0 0
+0 0 0 0 0
+
+Hasil operasi eliminasi
+0 0 0 0 0
+0 0 0 0 0
+0 1 -2 0 0
+1 0 0 -1 -1
+
+x1 = -1 + 1d 
+x2 = 0 + 2c 
+x3 = c
+x4 = d

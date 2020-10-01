@@ -1,0 +1,28 @@
+Matriks masukkan
+2 0 8 0 8
+0 1 0 4 6
+-4 0 6 0 6
+0 -2 0 3 -1
+2 0 -4 0 -4
+0 1 0 -2 0
+
+Hasil operasi elimininasi Gauss
+2 0 8 0 8
+0 1 0 4 6
+0 0 22 0 22
+0 0 0 11 11
+0 0 0 0 0
+0 0 0 0 0
+
+Hasil operasi eliminasi
+1 0 0 0 0
+0 1 0 0 2
+0 0 1 0 1
+0 0 0 1 1
+0 0 0 0 0
+0 0 0 0 0
+
+x1 = 0 
+x2 = 2 
+x3 = 1 
+x4 = 1 

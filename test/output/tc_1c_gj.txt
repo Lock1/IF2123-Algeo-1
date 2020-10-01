@@ -1,0 +1,21 @@
+Matriks masukkan
+0 1 0 0 1 0 2
+0 0 0 1 1 0 -1
+0 1 0 0 0 1 1
+
+Hasil operasi elimininasi Gauss-Jordan
+0 1 0 0 1 0 2
+0 0 0 1 1 0 -1
+0 0 0 0 1 -1 1
+
+Hasil operasi eliminasi
+0 0 0 1 0 1 -2
+0 1 0 0 0 1 1
+0 0 0 0 1 -1 1
+
+x1 = a
+x2 = 1 - 1f 
+x3 = c
+x4 = -2 - 1f 
+x5 = 1 + 1f 
+x6 = f
