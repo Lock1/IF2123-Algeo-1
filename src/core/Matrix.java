@@ -188,11 +188,19 @@ public class Matrix {
 					this.multiplyRow(i, 1 / (matrix[i][j]));
 					break;
 				}
+		// Elimination for upper diagonal
+		for (int i = row - 1; i >= 0; i--)
+			for (int j = 0; j < column - 1; j++)
+				if (matrix[i][j] == 1.0) {
+					for (int a = i - 1; a >= 0; a--)
+						this.sumRow(i, a, ((-1) * (matrix[a][j])));
+					break;
+				}
 		// Extreme number rounding, disable this block if not using rounding
-//		for (int i = 0 ; i < row ; i++)
-//			for (int j = 0 ; j < column ; j++)
-//				if ((matrix[i][j] > 1E10) || (matrix[i][j] < -1E10) || ((matrix[i][j] < 1E-10) && (matrix[i][j] > -1E-10)))
-//					matrix[i][j] = 0;
+		for (int i = 0 ; i < row ; i++)
+			for (int j = 0 ; j < column ; j++)
+				if ((matrix[i][j] > 1E10) || (matrix[i][j] < -1E10) || ((matrix[i][j] < 1E-10) && (matrix[i][j] > -1E-10)))
+					matrix[i][j] = 0;
 	}
 
 	public double[] cramerMethod() {
@@ -216,27 +224,9 @@ public class Matrix {
 		return vectorResult;
 	}
 
-	// Complete elimination
-	public void completeGaussJordanElimination() {
-		// Make sure this matrix already reduced row echelon form
-		this.gaussJordanElimination();
-		// Gauss-Jordan Elimination for upper diagonal
-		for (int i = row - 1; i >= 0; i--)
-			for (int j = 0; j < column - 1; j++)
-				if (matrix[i][j] == 1.0) {
-					for (int a = i - 1; a >= 0; a--)
-						this.sumRow(i, a, ((-1) * (matrix[a][j])));
-					break;
-				}
-		// Extreme number rounding, disable this block if not using rounding
-		for (int i = 0 ; i < row ; i++)
-			for (int j = 0 ; j < column ; j++)
-				if ((matrix[i][j] > 1E10) || (matrix[i][j] < -1E10) || ((matrix[i][j] < 1E-10) && (matrix[i][j] > -1E-10)))
-					matrix[i][j] = 0;
-	}
 
 	public String eliminationRREFMatrix() {
-		this.completeGaussJordanElimination();
+		this.gaussJordanElimination();
 		// Sorting matrix
 		int minBox = (row > column) ? column - 1 : row;
 		for (int i = 0; i < minBox; i++)

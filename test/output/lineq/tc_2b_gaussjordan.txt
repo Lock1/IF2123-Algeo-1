@@ -6,9 +6,9 @@ Matriks masukkan
 2 0 -4 0 -4
 0 1 0 -2 0
 
-Hasil operasi elimininasi Gauss-Jordan
-1 0 4 0 4
-0 1 0 4 6
+Hasil operasi eliminasi Gauss-Jordan
+1 0 0 0 0
+0 1 0 0 2
 0 0 1 0 1
 0 0 0 1 1
 0 0 0 0 0

@@ -272,12 +272,12 @@ public class CLI {
 			if (tempString.equals("1")) {
 				tempMatrix.gaussianElimination(); // For some reason, probably due rounding error,
 				tempMatrix.gaussianElimination(); // Need 2x call to get proper row echelon form
-				writeString = writeString + "Hasil operasi elimininasi Gauss\n" + Matrix.matrixToString(tempMatrix) + "\n";
+				writeString = writeString + "Hasil operasi eliminasi Gauss\n" + Matrix.matrixToString(tempMatrix) + "\n";
 			}
 			else {
 				tempMatrix.gaussJordanElimination();
 				tempMatrix.gaussJordanElimination();
-				writeString = writeString + "Hasil operasi elimininasi Gauss-Jordan\n" + Matrix.matrixToString(tempMatrix) + "\n";
+				writeString = writeString + "Hasil operasi eliminasi Gauss-Jordan\n" + Matrix.matrixToString(tempMatrix) + "\n";
 			}
 			writeString = writeString + tempMatrix.eliminationRREFMatrix();
 		}

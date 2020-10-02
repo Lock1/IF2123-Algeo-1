@@ -6,7 +6,7 @@ Matriks masukkan
 2 0 -4 0 -4
 0 1 0 -2 0
 
-Hasil operasi elimininasi Gauss
+Hasil operasi eliminasi Gauss
 2 0 8 0 8
 0 1 0 4 6
 0 0 22 0 22

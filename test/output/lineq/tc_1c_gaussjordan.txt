@@ -3,9 +3,9 @@ Matriks masukkan
 0 0 0 1 1 0 -1
 0 1 0 0 0 1 1
 
-Hasil operasi elimininasi Gauss-Jordan
-0 1 0 0 1 0 2
-0 0 0 1 1 0 -1
+Hasil operasi eliminasi Gauss-Jordan
+0 1 0 0 0 1 1
+0 0 0 1 0 1 -2
 0 0 0 0 1 -1 1
 
 Hasil operasi eliminasi

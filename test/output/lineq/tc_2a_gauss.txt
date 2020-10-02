@@ -4,7 +4,7 @@ Matriks masukkan
 -1 2 -4 1 1
 3 0 0 -3 -3
 
-Hasil operasi elimininasi Gauss
+Hasil operasi eliminasi Gauss
 1 -1 2 -1 -1
 0 3 -6 0 0
 0 0 0 0 0
