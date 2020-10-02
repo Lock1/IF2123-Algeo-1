@@ -2,7 +2,7 @@ package core;
 
 import java.io.*;
 
-public class FileParser { // TODO find how to relative - absolute path
+public class FileParser {
     // Attribute
 	private File currentFile;
     private FileWriter writeFile;
@@ -25,7 +25,7 @@ public class FileParser { // TODO find how to relative - absolute path
         }
     }
 
-    public String stringRead() { // FIXME : Theres some problem with last column entry if using space before newline
+    public String stringRead() {
     	char temp[] = new char[20000]; // Max buffer
         BufferedReader readFileB = new BufferedReader(readFile);
         StringBuilder tempS = new StringBuilder();

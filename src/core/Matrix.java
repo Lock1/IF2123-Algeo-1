@@ -39,6 +39,7 @@ public class Matrix {
 	// Conversion method
 	public static Matrix stringToMatrix(String stream) {
 		// Count Size
+		// FIXME : Theres some problem with last column entry if using space before newline
 		int rRow = 0, rCol = 0;
 		boolean readingN = false, firstRow = true;
 		for (int i = 0; i < stream.length(); i++) { // maybe it split to row & column read for lower instruction
