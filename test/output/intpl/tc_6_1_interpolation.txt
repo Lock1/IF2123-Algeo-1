@@ -11,4 +11,4 @@ Sampel titik
 9.333 145510
 Hasil polinom interpolasi
 f(x) = - 0.04x^9 - 1.31x^8 + 19.63x^7 + 37.58x^6 - 336.01x^5 + 198.29x^4 - 7043.41x^3 + 84967.56x^2 - 403305.87x^1 + 675966.23x^0 
-Hasil estimasi f(8.968) = 23330700.090
+Hasil estimasi f(5.806) = 1671691.090
