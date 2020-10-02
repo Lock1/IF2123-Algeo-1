@@ -82,10 +82,12 @@ Interpolasi - Polinom Interpolasi | :white_check_mark:
 Regresi - Regresi Linear Ganda    | :white_check_mark:
 
 ## Laporan 
+**Status : WIP** :white_check_mark: \
+**4 / 5**
 Bab                   | Status
 ---                   | ------
-Deskripsi Masalah     | :x:
+Deskripsi Masalah     | :white_check_mark:
 Teori Singkat         | :white_check_mark:
-Implementasi Program  | :x:
-Eksperimen            | :x:
+Implementasi Program  | :white_check_mark:
+Eksperimen            | :white_check_mark:
 Kesimpulan            | :x:
