@@ -12,6 +12,7 @@
 - Program dapat dijalankan dengan command line pada folder /bin/ atau menggunakan jar.
 - Direkomendasikan untuk menjalankan program dari direktori utama repositori, gunakan "java -cp bin Core" atau "java -jar Alin1.jar"
 - Untuk GUI, kode GUI belum selesai terimplementasikan.
+- Secara default, program dijalankan dengan argument "**-CLI**", untuk mencoba GUI, dapat digunakan launch argument "**-GUI**".
 
 ### Style kode
 - Karena tidak terlalu terbiasa dengan java, beberapa implementasi dapat diperbaiki untuk mengurangi code retyping.
