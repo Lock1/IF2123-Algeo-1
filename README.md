@@ -35,7 +35,7 @@ Tanggal Mulai   | 17 September 2020
 Tanggal Selesai | 2 Oktober 2020
 Kelas           | 2
 Dosen           | Rinaldi Munir
-Asisten         | Muhammad Ayyub Abdurrahman 
+Asisten         | Muhammad Ayyub Abdurrahman
 Kelompok        | 75
 
 
@@ -82,13 +82,13 @@ Invers - Matriks Invers           | :white_check_mark:
 Interpolasi - Polinom Interpolasi | :white_check_mark:
 Regresi - Regresi Linear Ganda    | :white_check_mark:
 
-## Laporan 
-**Status : WIP** :white_check_mark: \
-**4 / 5**
+## Laporan
+**Status : Done** :white_check_mark: \
+**5 / 5**
 Bab                   | Status
 ---                   | ------
 Deskripsi Masalah     | :white_check_mark:
 Teori Singkat         | :white_check_mark:
 Implementasi Program  | :white_check_mark:
 Eksperimen            | :white_check_mark:
-Kesimpulan            | :x:
+Kesimpulan            | :white_check_mark:
