@@ -2,12 +2,12 @@
 **TBA**
 
 ### Release
-**TBA**
+[v1.0](https://github.com/Lock1/Algeo01-19129/releases/tag/v1.0)
 
 
 ### Tentang Program
 - Untuk guideline dan spesifikasi tentang tugas besar, akan diupload pada folder "other/rule and guidelines/" setelah tugas besar selesai
-- Release versi 1.0 menandai bahwa release tersebut adalah **program yang dikumpulkan** ketika deadline, tanpa perubahan.
+- Release versi **1.0** menandai bahwa release tersebut adalah **program yang dikumpulkan** ketika deadline, tanpa perubahan.
 - Class utama bernama **Core**.
 - Program dapat dijalankan dengan command line pada folder /bin/ atau menggunakan jar.
 - Direkomendasikan untuk menjalankan program dari direktori utama repositori, gunakan "java -cp bin Core" atau "java -jar Alin1.jar"
