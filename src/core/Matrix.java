@@ -427,7 +427,23 @@ public class Matrix {
 	}
 
 	// Inverse method
-	public static Matrix inverseMatrix(Matrix M) { // TODO : edge case 2x2
+	public static Matrix inverseMatrix(Matrix M) { 
+		if (M.getRow() == 1) {
+			M.matrix[0][0] = 1/M.matrix[0][0];
+			return M;
+		}
+		if (M.getRow() == 2) {
+			Matrix M1 = new Matrix(2,2);
+			double determinan;
+			determinan = (1 / M.cofactorDet());
+			M1.matrix[0][0] = M.matrix[1][1] * determinan;
+			M1.matrix[1][0] = -M.matrix[1][0] * determinan;
+			M1.matrix[0][1] = -M.matrix[0][1] * determinan;
+			M1.matrix[1][1] = M.matrix[0][0] * determinan;
+			return M1;
+		}
+		
+		
 		Matrix M1 = new Matrix(M.getRow(), M.getColumn()); // matriks adjoin yang nantinya menjadi matriks inverse
 		Matrix kofaktor = new Matrix(M.getRow(), M.getColumn());
 		int i, j;
