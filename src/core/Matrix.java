@@ -169,6 +169,14 @@ public class Matrix {
 						this.sumRow(i, a, ((-1) * (matrix[a][j] / matrix[i][j])));
 					break;
 				}
+		int minBox = (row > column) ? column - 1 : row;
+		for (int i = 0; i < minBox; i++)
+			if (matrix[i][i] == 0)
+				for (int a = i + 1; a < row; a++)
+					if (matrix[a][i] != 0.0) {
+						this.swapRow(a, i);
+						break;
+					}
 	}
 
 	public void gaussJordanElimination() {
@@ -179,6 +187,11 @@ public class Matrix {
 					this.multiplyRow(i, 1 / (matrix[i][j]));
 					break;
 				}
+		// Extreme number rounding, disable this block if not using rounding
+//		for (int i = 0 ; i < row ; i++)
+//			for (int j = 0 ; j < column ; j++)
+//				if ((matrix[i][j] > 1E10) || (matrix[i][j] < -1E10) || ((matrix[i][j] < 1E-10) && (matrix[i][j] > -1E-10)))
+//					matrix[i][j] = 0;
 	}
 
 	public double[] cramerMethod() {
@@ -233,7 +246,6 @@ public class Matrix {
 						break;
 					}
 		String writeString = "";
-		this.printMatrix();
 
 		// Extreme number rounding, disable this block if not using rounding
 		for (int i = 0 ; i < row ; i++)
@@ -415,7 +427,7 @@ public class Matrix {
 	}
 
 	// Inverse method
-	public static Matrix inverseMatrix(Matrix M) {
+	public static Matrix inverseMatrix(Matrix M) { // TODO : edge case 2x2
 		Matrix M1 = new Matrix(M.getRow(), M.getColumn()); // matriks adjoin yang nantinya menjadi matriks inverse
 		Matrix kofaktor = new Matrix(M.getRow(), M.getColumn());
 		int i, j;
