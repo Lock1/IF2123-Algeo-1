@@ -6,7 +6,7 @@
 
 
 ### Tentang Program
-- Untuk guideline dan spesifikasi tentang tugas besar, akan diupload pada folder "other/rule and guidelines/" setelah tugas besar selesai
+- Untuk guideline dan spesifikasi tentang tugas besar, terdapat pada folder "other/rule and guidelines/"
 - Release versi **1.0** menandai bahwa release tersebut adalah **program yang dikumpulkan** ketika deadline, tanpa perubahan.
 - Class utama bernama **Core**.
 - Program dapat dijalankan dengan command line pada folder /bin/ atau menggunakan jar.
