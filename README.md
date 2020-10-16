@@ -15,7 +15,7 @@
 - Secara default, program dijalankan dengan argument "**-CLI**", untuk mencoba GUI, dapat digunakan launch argument "**-GUI**".
 
 ### Style kode
-- Karena tidak terlalu terbiasa dengan java, beberapa implementasi dapat diperbaiki untuk mengurangi code retyping.
+- Karena belum terbiasa dengan OO beberapa kode ditulis ulang yang berakibat menambah clutter pada kode.
 - Deklarasi variabel diusahakan untuk selalu dekat dengan penggunaanya untuk mengurangi scope.
 - Indentasi dan penempatan bracket dijaga konsisten.
 

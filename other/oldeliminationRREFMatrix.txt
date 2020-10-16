@@ -1,0 +1,48 @@
+		// Zero row deletion
+		// if (zeroRowCount > 0) {
+		// 	double tempMatrix[][] = new double[row-zeroRowCount][column];
+		// 	int rowWriteIndex = 0;
+		// 	for (int i = 0 ; i < row ; i++) {
+		// 		if (zeroRowIndex[i])
+		// 			continue;
+		// 		for (int j = 0 ; j < column ; j++)
+		// 			tempMatrix[rowWriteIndex][j] = matrix[i][j];
+		// 		rowWriteIndex++;
+		// 	}
+		// 	matrix = tempMatrix;
+		// 	row -= zeroRowCount;
+		// }
+
+		// Scan for unique solution
+		// if (row == (column - 1)) {
+		// 	boolean isUnique = true;		// Matrix must be on RREF first
+		// 	for (int i = 0 ; i < row ; i++) // Matrix must be in identity matrix
+		// 		for (int j = 0 ; j < column - 1 ; j++)
+		// 			if ((matrix[i][i] != 1.0) || ((matrix[i][j] != 0.0) && (i != j)))
+		// 				isUnique = false;
+		// 	if (isUnique) {
+		// 		for (int i = 0 ; i < row ; i++) {
+		// 				System.out.println("x" + Integer.toString(i+1) + " = " + Double.toString(matrix[i][column-1]));
+		// 				writeString = writeString + "x" + Integer.toString(i+1) + " = " + Double.toString(matrix[i][column-1]) + "\n";
+		// 		}
+		// 	}
+		// 	else {
+		// 		writeString = "Tidak ada solusi\n";
+		// 		System.out.println("Tidak ada solusi");
+		// 	}
+		// 	return writeString;
+		// }
+
+		// Scan for non-unique solution
+		// else {
+
+
+
+
+
+			// TODO : Actually it wont add 1 1 0 3, x1 or x2 as free variable
+			// Checking entire column are filled with 0 entries
+			// for (int j = 0 ; j < column ; j++)
+			// 	for (int i = 0 ; i < row ; i++)
+			// 		if (matrix[i][j] != 0.0)
+			// 			freeVariable[j] = false;
