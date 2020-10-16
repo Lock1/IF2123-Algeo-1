@@ -1,5 +1,6 @@
 # Tugas Besar 1 - Aljabar Linear dan Geometri
-**TBA**
+**TBA** \
+- GUI \
 
 ### Release
 [v1.0](https://github.com/Lock1/Algeo01-19129/releases/tag/v1.0)
