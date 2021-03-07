@@ -1,8 +1,0 @@
-MENU
-1. Sistem Persamaan Linier
-2. Determinan
-3. Matriks balikan
-4. Interpolasi Polinom
-5. Regresi linier berganda
-6. Keluar
->> 
